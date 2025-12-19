@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
         required : true
     },
     icon:{type : String},
-    amount : {type : String, required : true},
+    amount : {type : Number, required : true},
     category : {type : String, required : true},
     date : {type :Date , default : Date.now},
  },{

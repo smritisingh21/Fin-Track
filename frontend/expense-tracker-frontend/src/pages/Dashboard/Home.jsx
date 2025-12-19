@@ -49,7 +49,7 @@ export default function Home() {
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-    <div className=' my-5 mx-auto'>
+      <div className=' my-5 mx-auto'>
       
       {(!dashboardData || loading) ? (
         <div className='text-white text-center py-20'>Loading Dashboard Data...</div>
@@ -58,51 +58,52 @@ export default function Home() {
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
           <InfoCard icon={<IoMdCard/>}
           label="Total balance"
-          value = {addThousandsSeparator(dashboardData.totalBalance || 0)}
+          value = {addThousandsSeparator(dashboardData?.totalBalance || 0)}
           color = "bg-primary"
           />
 
           <InfoCard icon={<LuWalletMinimal/>}
           label="Total Income"
-          value = {addThousandsSeparator(dashboardData.totalIncome || 0)}
+          value = {addThousandsSeparator(dashboardData?.totalIncome || 0)}
           color = "bg-orange-500"
           />
 
           <InfoCard icon={<LuHandCoins/>}
           label="Total Expense"
-          value = {addThousandsSeparator(dashboardData.totalExpense || 0)}
+          value = {addThousandsSeparator(dashboardData?.totalExpense || 0)}
           color = "bg-red-500"
           />
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+
           <RecentTransactions 
-          transactions ={dashboardData.recentTransactions}
+          transactions ={dashboardData?.recentTransactions}
           onseeMore ={()=> navigate("/expenses")}
           />
 
           <FinanceOverview 
-              totalBalance ={dashboardData.totalBalance || 0 }
-              totalIncome ={dashboardData.totalIncome || 0 }
-              totalExpense ={dashboardData.totalExpense || 0 }
+              totalBalance ={dashboardData?.totalBalance || 0 }
+              totalIncome ={dashboardData?.totalIncome || 0 }
+              totalExpense ={dashboardData?.totalExpense || 0 }
           />
 
           <ExpenseTransactions 
-            data={dashboardData.last30DaysExpenses?.transactions || []}
+            data={dashboardData.last30daysExpenses?.transactions || []}
             onseeMore ={()=> navigate("/expenses")}
             />
 
           <Last30daysExpenses
-            data={dashboardData.last30DaysExpenses?.transactions || []}
+            data={dashboardData.last30daysExpenses?.transactions || []}
           />
 
           <RecentIncomeWithChart
-          data={dashboardData.last60DaysIncome?.transactions || []}
+          data={dashboardData.last60daysIncome?.transactions || []}
           totalIncome = {dashboardData.totalIncome || 0}
             
           />
 
           <RecentIncome
-          transactions ={dashboardData.last60DaysIncome?.transactions || []}
+          transactions ={dashboardData.last60daysIncome?.transactions || []}
           onseeMore ={()=> navigate("/income")}
           />
         </div>

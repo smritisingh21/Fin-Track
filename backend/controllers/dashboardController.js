@@ -1,5 +1,5 @@
-const Income = require('../models/income');
-const Expense = require('../models/expenses');
+const Income = require('../models/income.js');
+const Expense = require('../models/expenses.js');
 const {isValidObjectId , Types} = require('mongoose');
 
 
@@ -17,7 +17,6 @@ try{
         }}
     ])
     
-    console.log("totalIncome", {totalIncome ,userId : isValidObjectId(userId)});
     
      const totalExpense = await Expense.aggregate([
         {$match : {userId : userObjId}},
