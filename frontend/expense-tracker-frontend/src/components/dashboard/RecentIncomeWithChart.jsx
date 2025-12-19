@@ -1,8 +1,6 @@
-import React, { useMemo } from 'react' // FIX: Imported useMemo to fix the infinite loop
+import React, { useMemo } from 'react' 
 import { CustomPieChart } from '../charts/CustomPieChart'
 
-// FIX: Assuming the external helper is not needed for this simple map operation
-// If complex logic is required, that logic should be memoized here.
 
 const COLORS =["#075CF5" ,"#FA2C37","#FF6900"]
 
@@ -13,13 +11,10 @@ const RecentIncomeWithChart = ({data,totalIncome}) => {
             return [];
         }
         
-        const dataArr = data.map((item) =>({
-            name : item?.source || item?.category, 
+        return data.map((item) =>({
+            name : item?.source || item?.category || "other", 
             amount: item?.amount
         }));
-        
-        return [dataArr]; 
-        
     }, [data]); 
 
   return (

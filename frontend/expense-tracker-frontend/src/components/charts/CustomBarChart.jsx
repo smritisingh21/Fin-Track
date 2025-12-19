@@ -5,6 +5,7 @@ import { BarChart, Bar , XAxis,YAxis,
 
  const CustomBarChart = ({data}) => {
     //function to alternate colors
+    
     const getBarColors = ( index )=>{
     return index % 2 === 0? "#875cf5" : "#cfbefb"
     };

@@ -7,6 +7,7 @@ import {PieChart, Pie, Cell ,Tooltip, ResponsiveContainer , Legend} from 'rechar
 export const CustomPieChart = ({data , label , totalAmount ,colors, showTextAnchor}) => {
 
    const chartData = Array.isArray(data) ? data : [];
+   
   return (
     
         <ResponsiveContainer width='100%' height={380}>

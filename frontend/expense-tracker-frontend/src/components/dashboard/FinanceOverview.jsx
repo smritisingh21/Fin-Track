@@ -2,7 +2,7 @@ import React, { useMemo } from 'react' // 👈 Import useMemo
 import { CustomPieChart } from '../charts/CustomPieChart'
 
 
-const COLORS =["#075CF5" ,"#FA2C37","#FF6900"]
+const COLORS =["#D9D9D9","#5F8575" ,"#F76565"]
 
  const FinanceOverview = ({totalBalance , totalIncome , totalExpense}) => {
 
@@ -18,7 +18,7 @@ const COLORS =["#075CF5" ,"#FA2C37","#FF6900"]
     
     <div className='card'>
         <div className='flex items-center justify-between'>
-            <h5 className='text-lg'>Financial overview</h5>
+            <h5 className='text-lg'>Overview</h5>
         </div>
 
         <CustomPieChart

@@ -5,7 +5,6 @@ import moment from 'moment'
 
 
 const RecentIncome = ({transactions , onseeMore}) => {
-  console.log(transactions);
   return (
     <div className='card'>
         <div className='flex items-center justify-between'>

@@ -17,12 +17,12 @@ export const ExpenseTransactions = ({transactions , onseeMore}) => {
         </div>
 
         <div className='mt-6'>
-            {transactions?.slice(0,5).map((expense) =>(
+            {transactions?.slice(0,5).map((expense) => (
                 <TransactionInfoCard
                     key={expense._id}
                     title={ expense.category}
                     icon ={expense.icon}
-                    date={moment(expense.date).format('DD MM YYYY')}
+                    date={moment(expense.date).format('DD-MM-YYYY')}
                     amount={expense.amount}
                     type= "expense"
                     hideDeleteBtn

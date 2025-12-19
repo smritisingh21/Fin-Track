@@ -94,6 +94,8 @@ export default function Home() {
 
           <Last30daysExpenses
             data={dashboardData.last30daysExpenses?.transactions || []}
+           totalExpense = {dashboardData.totalExpense || 0}
+
           />
 
           <RecentIncomeWithChart
