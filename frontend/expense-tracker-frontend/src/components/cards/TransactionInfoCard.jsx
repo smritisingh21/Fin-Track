@@ -10,6 +10,7 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
 
   return (
     <div className='group relative flex items-center gap-2 mt-4 p-3 rounded-lg hover:bg-gray-100/50'>
+        
        <div className='w-12 h-12 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full' >
             {icon?(
             <img src={icon} alt={title} className='w-6 h-6'/>
@@ -22,6 +23,7 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
         <div>
             <p className='text-sm text-gray-700 font-medium'>{title}</p>
             <p className='text-xs text-gray-400 mt-1'>{date}</p>
+         </div>
 
             <div className='flex items-center gap-2'>
                 {!hideDeleteBtn && (
@@ -42,7 +44,6 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
             </div>
         </div>
        </div>
-    </div>
   )
 }
 

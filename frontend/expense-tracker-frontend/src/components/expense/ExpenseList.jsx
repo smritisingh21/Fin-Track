@@ -6,7 +6,8 @@ import moment from 'moment'
  const ExpenseList = ({transactions , onDelete, onDownload}) => {
   return (
     <div className='card'>
-        <div className='flex items-center justify-center'>
+        <div className='flex place-items-center justify-between mb-10'>
+
             <h5 className='text-lg'>Expense History</h5>
 
             <button className='card-btn ml-3 items-end' onClick={onDownload}>
@@ -18,7 +19,7 @@ import moment from 'moment'
             {transactions?.map((expense) =>(
                 <TransactionInfoCard
                 key={expense._id}
-                title={expense.source}
+                title={expense.category}
                 icon = {expense.icon}
                 date = {moment(expense.date).format("DD.MM.YYYY")}
                 amount = {expense.amount}
