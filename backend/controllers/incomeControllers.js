@@ -12,7 +12,7 @@ exports.addIncome = async( req, res) => {
     }
 
     const newIncome = new Income({
-        userId , source , amount , date: new Date(date)
+       icon, userId , source , amount , date: new Date(date)
     })
 
     await newIncome.save();

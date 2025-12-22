@@ -6,8 +6,6 @@ const COLORS =["#D9D9D9","#5F8575" ,"#F76565"]
 
  const FinanceOverview = ({totalBalance , totalIncome , totalExpense}) => {
 
-    // FIX: Memoize the balanceData array creation.
-    // The array is only recreated if one of the three dependent values changes.
     const balanceData = useMemo(() => ([
         {name:"totalBalance" ,amount :totalBalance},
         {name:"totalIncome" ,amount :totalIncome},
@@ -24,7 +22,7 @@ const COLORS =["#D9D9D9","#5F8575" ,"#F76565"]
         <CustomPieChart
         data={balanceData} 
         label ='Total balance'
-        totalAmount={`$${totalBalance}`}
+        totalAmount={`${totalBalance}/-`}
         colors={COLORS}
         showTextAnchor
         />

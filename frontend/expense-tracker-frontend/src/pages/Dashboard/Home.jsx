@@ -11,7 +11,7 @@ import InfoCard from '../../components/cards/InfoCard.jsx';
 import RecentTransactions from '../../components/dashboard/RecentTransactions.jsx';
 import FinanceOverview  from '../../components/dashboard/FinanceOverview.jsx';
 import { ExpenseTransactions } from '../../components/dashboard/ExpenseTransactions.jsx';
-import { Last30daysExpenses } from './Last30daysExpenses.jsx';
+import { Last30daysExpense } from '../../components/dashboard/Last30daysExpense.jsx';
 import RecentIncomeWithChart from '../../components/dashboard/RecentIncomeWithChart.jsx'
 import RecentIncome from '../../components/dashboard/RecentIncome.jsx'
 
@@ -56,13 +56,15 @@ export default function Home() {
       ) : (
         <>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-          <InfoCard icon={<IoMdCard/>}
+          <InfoCard 
+          icon={<IoMdCard/>}
           label="Total balance"
           value = {addThousandsSeparator(dashboardData?.totalBalance || 0)}
           color = "bg-primary"
           />
 
-          <InfoCard icon={<LuWalletMinimal/>}
+          <InfoCard 
+          icon={<LuWalletMinimal/>}
           label="Total Income"
           value = {addThousandsSeparator(dashboardData?.totalIncome || 0)}
           color = "bg-orange-500"
@@ -73,8 +75,8 @@ export default function Home() {
           value = {addThousandsSeparator(dashboardData?.totalExpense || 0)}
           color = "bg-red-500"
           />
-        </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+          </div>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
 
           <RecentTransactions 
           transactions ={dashboardData?.recentTransactions}
@@ -88,12 +90,12 @@ export default function Home() {
           />
 
           <ExpenseTransactions 
-            data={dashboardData.last30daysExpenses?.transactions || []}
+            transactions={dashboardData.last30daysExpense?.transactions || []}
             onseeMore ={()=> navigate("/expenses")}
             />
 
-          <Last30daysExpenses
-            data={dashboardData.last30daysExpenses?.transactions || []}
+          <Last30daysExpense
+            transactions={dashboardData.last30daysExpense?.transactions || []}
 
           />
 

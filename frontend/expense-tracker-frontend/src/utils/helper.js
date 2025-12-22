@@ -31,15 +31,14 @@ export const addThousandsSeparator =(num) =>{
 };
 
 
-export const prepareExpenseBarChartData =(data =[]) =>{
-  const chartData = data.map((item) =>({
-    category : item?.category,
-    amount : item?.amount,
-
-  }))
-  return chartData;
-}
-
+export const prepareExpenseBarChartData = (data = []) => {
+  if (!Array.isArray(data)) return [];
+  
+  return data.map((item) => ({
+    label: item?.category || "Other",
+    amount: Number(item?.amount) || 0,
+  }));
+};
 
 
 export const prepareIncomeBarChartData =(data =[]) =>{
