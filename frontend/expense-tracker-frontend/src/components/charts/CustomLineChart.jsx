@@ -22,8 +22,8 @@ export const CustomLineChart = ({data}) => {
             <AreaChart data ={data}>
                 <defs>
                     <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#875cf5" stopOpacity={0.4}></stop>
-                        <stop offset="95%" stopColor="#875cf5" stopOpacity={0}></stop>
+                        <stop offset="5%" stopColor="#9E3A29" stopOpacity={0.4}></stop>
+                        <stop offset="95%" stopColor="#9E3A29" stopOpacity={0}></stop>
                     </linearGradient>
                 </defs>
 
@@ -31,7 +31,7 @@ export const CustomLineChart = ({data}) => {
                     <XAxis dataKey="month" tick={{fontSize :12 , fill:"#555"}} stroke='none' />
                     <YAxis  tick={{fontSize :12 , fill:"#555"}} stroke='none'/>
                     <Tooltip content={<CustomToolTip/>} />
-                    <Area type="monottone" dataKey='amount' stroke="#875cf5" fill="url(#incomeGradient)" strokeWidth={3} dot={{r:3, fill:"#ab8df8"}}/>
+                    <Area type="monottone" dataKey='amount' stroke="#9E3A29" fill="url(#incomeGradient)" strokeWidth={3} dot={{r:3, fill:"#ab8df8"}}/>
             </AreaChart>
         </ResponsiveContainer>
     </div>

@@ -18,22 +18,27 @@ export const ExpenseOverview = ({transactions, onAddExpense}) => {
     },[transactions])
 
   return <div className='card'>
-        <div className='flex items-center justify-between'>
+    
+       <div className='p-5'>
+         <div className='flex items-center justify-between mb-20 '>
             <div>
             <h5 className='text-lg'>Expense overview</h5>
+
             <p className='text-xs text-gray-400 mt-0.5'>
                 Track your spending trends overtime and gain insights into where your money goes.</p>
             </div>
-        </div>
-
-        <button className='add-btn mt-3' onClick={onAddExpense}>
+             <button className='add-btn mt-3' onClick={onAddExpense}>
             <LuPlus className='text-lg '/>
             Add expense
-        </button>
+            </button>
+        </div>
+
+       
 
         <div className='mt-10'>
             <CustomLineChart data={chartData}/>
         </div>
+       </div>
 
 
     </div>

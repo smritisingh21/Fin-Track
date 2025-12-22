@@ -8,7 +8,7 @@ export const ExpenseTransactions = ({transactions, onseeMore}) => {
     <div className='card'>
         <div className='flex items-center justify-between'>
           <h5 className='text-lg'>Expenses</h5>
-          <button className='card-btn' onClick={onseeMore}>
+          <button className='btn-primary' onClick={onseeMore}>
               See All 
               <LuArrowRight className='text-base'/>
           </button>

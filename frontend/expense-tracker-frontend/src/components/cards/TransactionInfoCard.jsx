@@ -1,5 +1,5 @@
 import React from 'react'
-import { LuUtensils , LuTrendingUp ,LuTrendingDown , LuTrash2 } from 'react-icons/lu';
+import { LuUtensils , LuTrash2 } from 'react-icons/lu';
 
 
 
@@ -34,11 +34,9 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
                 )}
 
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-md ${getAmountStyles()} `}>
-                    <h6 className='text-xs font-medium'>
+                    <h5 className='text-xs font-large'>
                         {type === 'income'? '+' :'-' }${amount}
-                    </h6>
-                        {type === 'income'? <LuTrendingUp/> : <LuTrendingDown/> } ${amount}
-
+                    </h5>
 
                 </div>
             </div>
