@@ -32,7 +32,7 @@ import { BarChart, Bar , XAxis,YAxis,
                 <CartesianGrid stroke='none'/>
 
                 <XAxis
-                 dataKey='month' 
+                 dataKey={'label'}
                 tick={{fontSize:12 ,fill:'#555'}} />
 
                 <YAxis 
@@ -42,7 +42,7 @@ import { BarChart, Bar , XAxis,YAxis,
                 <Tooltip content={CustomTooltip}/>
 
                 <Bar 
-                     dataKey='amount'
+                    dataKey='amount'
                     fill='#FF8042'
                     radius={[10,10,0,0]}
                     activeDot={{r:8 , fill:'yellow'}}

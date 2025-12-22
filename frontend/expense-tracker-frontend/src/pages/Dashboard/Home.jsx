@@ -78,16 +78,19 @@ export default function Home() {
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
 
-          <RecentTransactions 
-          transactions ={dashboardData?.recentTransactions}
-          onseeMore ={()=> navigate("/expenses")}
-          />
+
+
 
           <FinanceOverview 
               totalBalance ={dashboardData?.totalBalance || 0 }
               totalIncome ={dashboardData?.totalIncome || 0 }
               totalExpense ={dashboardData?.totalExpense || 0 }
           />
+          <RecentTransactions 
+          transactions ={dashboardData?.recentTransactions}
+          onseeMore ={()=> navigate("/expenses")}
+          />
+
 
           <ExpenseTransactions 
             transactions={dashboardData.last30daysExpense?.transactions || []}
