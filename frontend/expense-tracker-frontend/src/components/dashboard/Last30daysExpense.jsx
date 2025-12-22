@@ -14,7 +14,7 @@ export const Last30daysExpense = ({transactions}) => {
             <h5 className='text-lg mb-15'>Last 30 days expenses</h5>
         </div>
 
-        <CustomBarChart data={chartData} dataKey={'label'}/>
+        <CustomBarChart data={chartData} dataKey='label' color1='#630800' color2='#9C0C00'/>
     </div>
   )
 }

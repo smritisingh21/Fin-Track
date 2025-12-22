@@ -3,10 +3,10 @@ import { BarChart, Bar , XAxis,YAxis,
         CartesianGrid, Tooltip,Legend,
         ResponsiveContainer,Cell } from 'recharts'
 
- const CustomBarChart = ({data , dataKey}) => {
+ const CustomBarChart = ({data , dataKey ,color1 , color2}) => {
     
     const getBarColors = ( index )=>{
-    return index % 2 === 0? "#875cf5" : "#cfbefb"
+    return index % 2 === 0? color1: color2
     };
 
     const CustomTooltip = ({ active ,payload}) =>{
