@@ -29,7 +29,7 @@ export const IncomeOverview = ({transactions, onAddIncome}) => {
         </button>
 
         <div className='mt-10'>
-            <CustomBarChart data={chartData}/>
+            <CustomBarChart data={chartData} dataKey={'month'}/>
         </div>
 
 

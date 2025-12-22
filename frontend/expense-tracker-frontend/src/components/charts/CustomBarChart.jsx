@@ -3,7 +3,7 @@ import { BarChart, Bar , XAxis,YAxis,
         CartesianGrid, Tooltip,Legend,
         ResponsiveContainer,Cell } from 'recharts'
 
- const CustomBarChart = ({data}) => {
+ const CustomBarChart = ({data , dataKey}) => {
     
     const getBarColors = ( index )=>{
     return index % 2 === 0? "#875cf5" : "#cfbefb"
@@ -32,7 +32,7 @@ import { BarChart, Bar , XAxis,YAxis,
                 <CartesianGrid stroke='none'/>
 
                 <XAxis
-                 dataKey={'label'}
+                 dataKey={dataKey}
                 tick={{fontSize:12 ,fill:'#555'}} />
 
                 <YAxis 
