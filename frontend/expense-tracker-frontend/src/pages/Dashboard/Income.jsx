@@ -9,10 +9,13 @@ import axiosInstance from '../../utils/axiosInstance.js';
 import IncomeList  from '../../components/income/IncomeList.jsx';
 import DeleteAlert from '../../components/DeleteAlert.jsx';
 import useUserAuth from '../../hooks/useUserAuth.jsx';
-
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/ThemeContext.jsx';
 
 export default function Income() {
   useUserAuth();
+
+  const{isDark} = useContext(ThemeContext)
 
   const [incomeData , setIncomeData] = useState([]);
   const [loading , setLoading] = useState(false);

@@ -25,7 +25,7 @@ export const ExpenseTransactions = ({transactions, onseeMore, mode}) => {
                 <TransactionInfoCard
                     key={expense._id}
                     title={expense.category}
-                    date={moment(expense.date).format('DD-MM-YYYY')}
+                    date={moment(expense.date).format('ll')}
                     amount={expense.amount}
                     type= "expense"
                     hideDeleteBtn

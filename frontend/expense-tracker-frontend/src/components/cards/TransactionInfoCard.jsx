@@ -21,21 +21,21 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
 
        <div className='flex-1 flex items-center justify-between'>
         <div>
-            <p className='text-sm text-gray-700 font-medium'>{title}</p>
-            <p className='text-xs text-gray-400 mt-1'>{date}</p>
+            <p className='text-md text-gray-600 font-medium'>{title}</p>
+            <p className='text-sm text-gray-400 mt-1'>{date}</p>
          </div>
 
             <div className='flex items-center gap-2'>
                 {!hideDeleteBtn && (
                     <button className='text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition:opacity cusrsor-pointer'
                      onClick={onDelete}>
-                        <LuTrash2 size={18}/>
+                        <LuTrash2 size={20}/>
                     </button>   
                 )}
 
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-md ${getAmountStyles()} `}>
                     <h5 className='text-xs font-large'>
-                        {type === 'income'? '+' :'-' }${amount}
+                        {type === 'income'? '+' :'-' } Rs. {amount}/-
                     </h5>
 
                 </div>
