@@ -2,10 +2,13 @@ import React from 'react'
 import { LuArrowRight } from 'react-icons/lu'
 import TransactionInfoCard from '../cards/TransactionInfoCard'
 import moment from 'moment'
+import { useContext } from 'react'
+import { ThemeContext } from '../../context/ThemeContext.jsx'
+const RecentTransactions = ({transactions}) => {
 
-const RecentTransactions = ({transactions , onseeMore}) => {
+    const {isDark} = useContext(ThemeContext);
   return (
-    <div className='card'>
+    <div className={`${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
             <h5 className='text-lg'>Recent transactions</h5>
           

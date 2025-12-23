@@ -2,13 +2,18 @@ import React from 'react'
 import { LuArrowRight } from 'react-icons/lu'
 import TransactionInfoCard from '../cards/TransactionInfoCard.jsx'
 import moment from 'moment'
+import { useContext } from 'react'
+import { ThemeContext } from '../../context/ThemeContext.jsx'
 
-export const ExpenseTransactions = ({transactions, onseeMore}) => {
+export const ExpenseTransactions = ({transactions, onseeMore, mode}) => {
+
+      const {isDark} = useContext(ThemeContext);
+  
   return (
-    <div className='card'>
+    <div className={` ${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
-          <h5 className='text-lg'>Expenses</h5>
-          <button className='btn-primary' onClick={onseeMore}>
+          <h5 className={` text-lg${isDark? 'text-white':'text-gray-900'}`}>Expenses</h5>
+          <button className={isDark? 'text-white':'text-gray-900'} onClick={onseeMore}>
               See All 
               <LuArrowRight className='text-base'/>
           </button>

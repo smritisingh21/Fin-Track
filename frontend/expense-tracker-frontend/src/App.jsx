@@ -9,10 +9,12 @@ import Logout from "./pages/Auth/Logout.jsx"
 
 import { BrowserRouter as Router , Routes , Route , Navigate } from "react-router-dom"
 import UserProvider  from "./context/UserContext.jsx"
+import { ThemeProvider } from "./context/ThemeContext.jsx"
 
 function App() {
 
   return (
+    <ThemeProvider>
     <UserProvider>
         <div>
       <Router>
@@ -38,6 +40,7 @@ function App() {
       }}
     />
     </UserProvider>
+    </ThemeProvider>
   )
 }
 

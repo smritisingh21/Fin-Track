@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import CustomTooltip from './CustomTooltip.jsx'
 import CustomLegend from './CustomLegend.jsx'
 
 import {PieChart, Pie, Cell ,Tooltip, ResponsiveContainer , Legend} from 'recharts'
+import { ThemeContext } from '../../context/ThemeContext.jsx'
 
 export const CustomPieChart = ({data , label , totalAmount ,colors, showTextAnchor}) => {
+  const {isDark} = useContext(ThemeContext);
 
    const chartData = Array.isArray(data) ? data : [];
    
@@ -17,8 +19,10 @@ export const CustomPieChart = ({data , label , totalAmount ,colors, showTextAnch
             dataKey="amount"
             nameKey="name"
             cx='50%' cy='50%'
-            innerRadius={100} outerRadius={130} 
+            innerRadius={100}
+            outerRadius={130} 
             labelLine={false}>
+
             {chartData.map((entry,index) =>(
                 <Cell key={index} fill={colors[index % colors.length]}/>
             ))}
@@ -33,15 +37,17 @@ export const CustomPieChart = ({data , label , totalAmount ,colors, showTextAnch
                 y='50%' 
                 dy={-25} 
                 textAnchor='middle' 
-                fill='#666'
+                fill={`${isDark? 'white' : 'black' }`}
                 fontSize='14px'
                 >
                 {label}
                 </text>
-                  <text 
+
+                
+                <text 
                 x='50%' y='50%' 
                 dy={8} textAnchor='middle' 
-                fill='#333'
+                 fill={`${isDark? 'white' : 'black' }`}
                 fontSize='24px'
                 fontWeight='semi-bold'
                 >

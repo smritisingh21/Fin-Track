@@ -1,12 +1,15 @@
 import React,{useContext} from 'react'
 import Navbar from "./Navbar.jsx"
 import {UserContext} from "../../context/UserContext"
+import {ThemeContext} from '../../context/ThemeContext.jsx'
 import SideMenu from "./SideMenu.jsx"
 
-export default function DashboardLayout({children, activeMenu}){
+export default function DashboardLayout({children, activeMenu }){
+  const {isDark} = useContext(ThemeContext);
   const {user} = useContext(UserContext);
+
   return (
-    <div className=' min-h-screen bg-gray-50'>
+    <div className={` min-h-screen ${isDark ? 'bg-gray-900 ': 'bg-white'} `}>
         <Navbar activeMenu = {activeMenu} />
         {
           user && (

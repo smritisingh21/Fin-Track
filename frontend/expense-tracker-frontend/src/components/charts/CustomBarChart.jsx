@@ -27,7 +27,7 @@ import { BarChart, Bar , XAxis,YAxis,
 }
   return (
     <div className="h-[300px] w-full">
-        <ResponsiveContainer width='100%' height='100%'>
+        <ResponsiveContainer width='100%' height='90%'>
             <BarChart data={data}>
                 <CartesianGrid stroke='none'/>
 

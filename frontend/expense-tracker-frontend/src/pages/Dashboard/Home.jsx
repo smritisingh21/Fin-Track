@@ -22,7 +22,6 @@ export default function Home() {
     const [dashboardData , setDashboardData] = useState(null);
     const [loading , setLoading] = useState(false);
     
-    
     const fetchDashboardData = async () =>{
       if(loading ) return ;
       setLoading(true);
@@ -48,8 +47,8 @@ export default function Home() {
     },[])
 
   return (
-    <DashboardLayout activeMenu="Dashboard">
-      <div className=' my-5 mx-auto'>
+    <DashboardLayout activeMenu="Dashboard" mode>
+      <div className=' my-5 mx-auto '>
       
       {(!dashboardData || loading) ? (
         <div className='text-white text-center py-20'>Loading Dashboard Data...</div>
