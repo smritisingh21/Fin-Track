@@ -11,7 +11,7 @@ const Navbar = ({activeMenu}) => {
 
 
   return (
-    <div className={`flex justify-between gap-5 border border-b  border-gray-400/10 backdrop-blur-[2px] py-4 px-7 sticky top-0 z-30 ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+    <div className={`flex justify-between gap-5 border border-b border-gray-400/50 backdrop-blur-[1px] py-4 px-7 sticky top-0 z-30 ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
 
         <button className='block lg:hidden text-black ' 
             onClick={() => setOpenSideMenu(!openSideMenu)}>
@@ -21,7 +21,10 @@ const Navbar = ({activeMenu}) => {
             (<HiOutlineMenu className = "text-2xl"/>)}
         </button>
 
-        <h2 className={`text-lg font-medium ${isDark ? 'text-white' : 'text-black'}`}>Expense tracker</h2>
+        <h2 className={`flex-row gap-2 text-lg font-medium ${isDark ? 'text-white' : 'text-black'}`}>
+          <b className='text-[30px] text-emerald-600'>FinTrack  </b> 
+          <span className='text-[12px] text-gray-500'>Keep your finances in track</span>
+        </h2>
 
         <button className='cursor-pointer btn-primary'
          onClick={toggleDark}>
