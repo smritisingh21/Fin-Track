@@ -1,6 +1,7 @@
 import React ,{useContext, useState}from 'react'
 import {HiOutlineMenu , HiOutlineX} from "react-icons/hi"
 import { MdDarkMode ,MdOutlineDarkMode} from "react-icons/md";
+import { IoIosSunny } from "react-icons/io";
 import SideMenu from "./SideMenu"
 import { ThemeContext } from '../../context/ThemeContext';
 
@@ -26,11 +27,11 @@ const Navbar = ({activeMenu}) => {
           <span className='text-[12px] text-gray-500'>Keep your finances in track</span>
         </h2>
 
-        <button className='cursor-pointer btn-primary'
+        <button className={`cursor-pointer btn-primary rounded-full ${isDark ? 'bg-black' : 'bg-white'}`}
          onClick={toggleDark}>
 
-          {isDark ?  <MdOutlineDarkMode size={20}/> : <MdDarkMode size={20}/> }
-
+          {isDark ?  <IoIosSunny size={30} /> : <MdDarkMode size={20}/> }
+    
         </button>
 
         {openSideMenu && (
