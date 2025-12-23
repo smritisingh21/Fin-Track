@@ -10,7 +10,7 @@ const RecentTransactions = ({transactions}) => {
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
-            <h5 className='text-lg'>Recent transactions</h5>
+            <h5 className={`text-lg ${isDark? 'text-amber-50': 'text-black'}`}>Recent transactions</h5>
           
         </div>
 

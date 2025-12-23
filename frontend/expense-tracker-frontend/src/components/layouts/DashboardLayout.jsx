@@ -9,7 +9,7 @@ export default function DashboardLayout({children, activeMenu }){
   const {user} = useContext(UserContext);
 
   return (
-    <div className={` min-h-screen ${isDark ? 'bg-gray-900 ': 'bg-white'} `}>
+    <div className={` min-h-screen ${isDark ? 'bg-[#030712] ': 'bg-white'} `}>
         <Navbar activeMenu = {activeMenu} />
         {
           user && (

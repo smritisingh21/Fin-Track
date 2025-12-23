@@ -11,7 +11,7 @@ const Navbar = ({activeMenu}) => {
 
 
   return (
-    <div className={`flex justify-between gap-5 border border-b border-gray-400/50 backdrop-blur-[1px] py-4 px-7 sticky top-0 z-30 ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+    <div className={`flex justify-between gap-5 border border-b border-gray-400/50 backdrop-blur-[1px] py-4 px-7 sticky top-0 z-30 ${isDark ? 'bg-[#030712]' : 'bg-white'}`}>
 
         <button className='block lg:hidden text-black ' 
             onClick={() => setOpenSideMenu(!openSideMenu)}>
@@ -30,7 +30,6 @@ const Navbar = ({activeMenu}) => {
          onClick={toggleDark}>
 
           {isDark ?  <MdOutlineDarkMode size={20}/> : <MdDarkMode size={20}/> }
-          {isDark ? "Day" : "Night"}
 
         </button>
 

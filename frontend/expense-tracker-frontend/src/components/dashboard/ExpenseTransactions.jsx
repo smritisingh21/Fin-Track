@@ -12,8 +12,8 @@ export const ExpenseTransactions = ({transactions, onseeMore, mode}) => {
   return (
     <div className={` ${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
-          <h5 className={` text-lg${isDark? 'text-white':'text-gray-900'}`}>Expenses</h5>
-          <button className={isDark? 'text-white':'text-gray-900'} onClick={onseeMore}>
+          <h5 className={` text-lg mb-2 ${isDark? 'text-white':'text-gray-900'}`}>Expenses</h5>
+          <button className='btn-primary' onClick={onseeMore}>
               See All 
               <LuArrowRight className='text-base'/>
           </button>

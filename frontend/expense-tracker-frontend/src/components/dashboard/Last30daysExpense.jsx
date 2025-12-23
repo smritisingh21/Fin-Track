@@ -16,10 +16,10 @@ export const Last30daysExpense = ({transactions}) => {
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div  className='flex items-center justify-between'>
-            <h5 className={` text-lg ${isDark? 'text-white':'text-gray-900'}`}>Last 30 days expenses</h5>
+            <h5 className={` text-lg mb-20 ${isDark? 'text-white':'text-gray-900'}`}>Last 30 days expenses</h5>
         </div>
 
-        <CustomBarChart data={chartData} dataKey='label' color1='#630800' color2='#9C0C00'/>
+        <CustomBarChart data={chartData} dataKey='label' color1='#FF3B3B' color2='#FF3B3B'/>
     </div>
   )
 }

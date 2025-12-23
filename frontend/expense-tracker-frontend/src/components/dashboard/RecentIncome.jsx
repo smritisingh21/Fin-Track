@@ -12,7 +12,7 @@ const RecentIncome = ({transactions , onseeMore}) => {
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
-            <h5 className={` text-lg${isDark? 'text-white':'text-gray-900'}`}>Income</h5>
+            <h5 className={` text-lg ${isDark? 'text-white':'text-gray-900'}`}>Income</h5>
             <button className='btn-primary' onClick={onseeMore}>
                 See All 
                 <LuArrowRight className='text-base'/>

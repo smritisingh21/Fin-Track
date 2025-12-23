@@ -23,7 +23,7 @@ const RecentIncomeWithChart = ({data,totalIncome}) => {
 
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
-        <div className=''>
+        <div className={`text-lg ${isDark? 'text-amber-50': 'text-black'}`}>
             <h5>Last 60 days Income</h5>
         </div>
 

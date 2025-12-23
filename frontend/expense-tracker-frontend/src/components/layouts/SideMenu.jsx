@@ -24,7 +24,7 @@ const SideMenu = ({activeMenu}) => {
     }
 
 
-  return <div className={`w-64 h-[calc(100vh-61px)] border-r border-gray-200/50 p-5 sticky top-[61px] z-20 ${isDark? 'bg-gray-800': 'bg-white'}`}>
+  return <div className={`w-64 h-[calc(100vh-61px)] border-r border-gray-200/50 p-5 sticky top-[61px] z-20 ${isDark? 'bg-[#030712]': 'bg-white'}`}>
             <div className='flex flex-col items-center justify-center gap-3 mt-3 mb-7'>
             {user?.profileImageUrl? (
                 <img
@@ -32,7 +32,8 @@ const SideMenu = ({activeMenu}) => {
                 alt ="profile image"
                 className={`w-20 h-20 bg-slate-400 rounded-full${isDark? 'bg-gray-800': 'bg-white'}`}
                 /> )
-                :(
+                :
+                (
                 <CharAvatar
                     fullname ={user?.name}
                     width = "w-20"
@@ -42,7 +43,7 @@ const SideMenu = ({activeMenu}) => {
                 )
 
             }
-            <h5 className={`font-medium leading-6${isDark? 'text-white': 'text-black'}`}>
+            <h5 className={`font-medium leading-6 ${isDark? 'text-white': 'text-black'}`}>
                 {user?.name || ""}
             </h5>
             </div>
