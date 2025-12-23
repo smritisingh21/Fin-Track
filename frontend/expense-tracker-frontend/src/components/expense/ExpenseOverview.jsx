@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { LuPlus } from 'react-icons/lu';
-import { prepareIncomeBarChartData } from '../../utils/helper.js'
-import CustomBarChart from '../charts/CustomBarChart.jsx'
 import CustomLineChart from '../charts/CustomLineChart.jsx';
 import { prepareExpenseLineChartData } from '../../utils/helper';
 import { ThemeContext } from '../../context/ThemeContext.jsx';
@@ -19,7 +17,7 @@ export const ExpenseOverview = ({transactions, onAddExpense}) => {
 
     },[transactions])
 
-  return<div className={`${isDark? 'card-dark' : 'card'}`}>
+  return<div className={`${isDark? 'graph-card-dark' : 'graph-card'}`}>
     
        <div className='p-5'>
          <div className='flex items-center justify-between mb-20 '>

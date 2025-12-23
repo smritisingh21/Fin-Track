@@ -1,8 +1,12 @@
-import React,{useState} from 'react'
+import React,{useContext, useState} from 'react'
 import { EmojiPickerPopup } from '../layouts/EmojiPickerPopup'
 import Input from '../layouts/Input.jsx'
+import { ThemeContext } from '../../context/ThemeContext.jsx'
 
  const AddIncomeForms = ({onAddIncome}) => {
+
+  const{isDark} = useContext(ThemeContext);
+
     const [income, setIncome] = useState({
         source : "",
         amount : "",
@@ -14,11 +18,13 @@ import Input from '../layouts/Input.jsx'
       setIncome({...income ,[key] : value})
 
   return (
-    <div>
+    
+    <div className={`${isDark? 'bg-slate-900' : 'bg-white'}`}>
       
         <EmojiPickerPopup
         icon = {income.icon}
         onSelect ={(selectedIcon) => handleChange("icon" , selectedIcon)}/>
+
         <Input
         value={income.source}
         label="Income Source"

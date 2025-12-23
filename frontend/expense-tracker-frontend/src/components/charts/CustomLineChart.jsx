@@ -21,7 +21,7 @@ export const CustomLineChart = ({data}) => {
     return null;
     };
 
-    return <div className={`transition-all duration-300 ${isDark? 'bg-[#11131E]' :'bg-white'}`}>
+    return <div className={`transition-all duration-0 ${isDark? 'bg-none' :'bg-white'}`}>
         <ResponsiveContainer width="100%" height={300}>
             <AreaChart data ={data}>
                 <defs>

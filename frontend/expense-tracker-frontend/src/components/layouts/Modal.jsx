@@ -5,6 +5,7 @@ const Modal = ({children ,isOpen , onClose,title}) => {
   if(!isOpen) return null;
 
   return (
+
     <div className='fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full max-h-full overflow-y-auto overflow-x-hidden bg-black/20 bg-opacity-50'>
         <div className='relative p-4 w-full max-w-2xl max-h-full'>
             <div className='relative bg-white rounded-lg shadow-sm'>
@@ -14,13 +15,14 @@ const Modal = ({children ,isOpen , onClose,title}) => {
                 </h3>
                 <button type='button' onClick={onClose}
                 className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex items-center justify-center dark:hover:text-white cursor-pointer '>
-                  <svg className='w-3 h-3'
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 14 14'
-                  >
-                  </svg>
+                 <svg
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px" y="0px"
+                width="100" height="100"
+                viewBox="0 0 172 172"
+                style=" fill:#26e07f;">
+                </svg>
+                
                   <path
                     stroke='currentColor'
                     strokeLinecap='round'

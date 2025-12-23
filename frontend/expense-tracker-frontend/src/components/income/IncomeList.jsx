@@ -10,7 +10,7 @@ import { ThemeContext } from '../../context/ThemeContext'
   return (
    <div className={`${isDark? 'card-dark' : 'card'}`}>
 
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between p-5'>
             
             <h5 className={`text-2xl ${isDark? 'text-white' :'text-black'}`}>
                 Income Sources

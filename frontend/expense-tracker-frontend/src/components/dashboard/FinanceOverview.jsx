@@ -24,7 +24,7 @@ import { ThemeContext } from '../../context/ThemeContext';
     
   return (
     
-    <div className={`p-6 rounded-2xl border transition-all duration-300 shadow-md ${
+    <div className={`${
             isDark ? 'card-dark' : 'card'
         }`}>
         <div className='flex items-center justify-between'>

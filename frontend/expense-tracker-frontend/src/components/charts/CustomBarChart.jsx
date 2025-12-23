@@ -2,6 +2,8 @@ import React from 'react'
 import { BarChart, Bar , XAxis,YAxis,
         CartesianGrid, Tooltip,Legend,
         ResponsiveContainer,Cell } from 'recharts'
+import { MdCurrencyRupee } from "react-icons/md";
+import { addThousandsSeparator } from '../../utils/helper';
 
  const CustomBarChart = ({data , dataKey ,color1 , color2}) => {
     
@@ -12,13 +14,16 @@ import { BarChart, Bar , XAxis,YAxis,
     const CustomTooltip = ({ active ,payload}) =>{
     if(active && payload && payload.length){
     return (
-    <div className='bg-white shadow md rounded-lg p02 border border-gray-300'>
-        <p className='text-xs font-semibold text-purple-800 mb-1'>
-        {payload[0].payload.category || payload[0].payload.month}
+    <div className=' bg-white h-xs w-30 shadow md rounded-lg p-2 border border-gray-300 items-center'>
+
+        <p className='text-sm font-semibold text-gray-800'>
+        {payload[0].payload.category || payload[0].payload.month} 
         </p>
-        <p className='text-sm text-gray-600'>
-             Amount : <span className='text-sm font-medium text-gray'>{payload[0].value}</span>
+         <p className='flex text-sm text-gray-600'>
+            <MdCurrencyRupee/>
+          <span className='text-xs font-medium text-gray'>{addThousandsSeparator(payload[0].value)}/-</span>
         </p>
+        
     </div>
     )
     }
