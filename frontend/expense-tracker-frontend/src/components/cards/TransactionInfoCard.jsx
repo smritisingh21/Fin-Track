@@ -1,5 +1,6 @@
 import React from 'react'
 import { LuUtensils , LuTrash2 } from 'react-icons/lu';
+import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 
 
 
@@ -15,7 +16,7 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
             {icon?(
             <img src={icon} alt={title} className='w-6 h-6'/>
             ):(
-            <LuUtensils/>
+            <RiMoneyRupeeCircleLine  size={30}/>
             )}
        </div>
 
@@ -27,9 +28,10 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
 
             <div className='flex items-center gap-2'>
                 {!hideDeleteBtn && (
-                    <button className='text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition:opacity cusrsor-pointer'
+                    <button className='flex text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition:opacity cursor-pointer mr-2'
                      onClick={onDelete}>
-                        <LuTrash2 size={20}/>
+                        <LuTrash2 size={20} className=''/>
+                        <span className='text-sm ml-1'>Delete</span>
                     </button>   
                 )}
 

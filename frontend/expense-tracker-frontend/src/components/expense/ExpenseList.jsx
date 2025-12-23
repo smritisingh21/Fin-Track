@@ -28,7 +28,7 @@ import { ThemeContext } from '../../context/ThemeContext'
                 key={expense._id}
                 title={expense.category}
                 icon = {expense.icon}
-                date = {moment(expense.date).format("DD.MM.YYYY")}
+                date = {moment(expense.date).format("llll")}
                 amount = {expense.amount}
                 type = "expense"
                 onDelete={() => onDelete(expense._id)}
