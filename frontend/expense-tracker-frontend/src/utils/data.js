@@ -6,6 +6,8 @@ import {
 } from "react-icons/lu"
 
 export const SIDE_DATA_MENU =[
+
+
     {
         id: "01",
         label:"Dashboard",
@@ -33,5 +35,6 @@ export const SIDE_DATA_MENU =[
         icon:LuLogOut,
         path: "/logout"
 
-    }
+    },
 ]
+

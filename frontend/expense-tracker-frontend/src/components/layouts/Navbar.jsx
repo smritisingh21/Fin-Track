@@ -12,7 +12,7 @@ const Navbar = ({activeMenu}) => {
 
 
   return (
-    <div className={`flex justify-between gap-5 border backdrop-blur-xs border-b border-gray-400/50  py-4 px-7 sticky top-0 z-30 bg-transparent`}>
+    <div className={`flex justify-between gap-5 border backdrop-blur-xs border-b border-gray-400/30  py-4 px-7 sticky top-0 z-30 bg-transparent`}>
 
         <button className='block lg:hidden text-black ' 
             onClick={() => setOpenSideMenu(!openSideMenu)}>
@@ -27,7 +27,7 @@ const Navbar = ({activeMenu}) => {
           <span className='text-[12px] text-gray-500'>Keep your finances in track</span>
         </h2>
 
-        <button className={`cursor-pointer btn-primary rounded-full ${isDark ? 'bg-black' : 'bg-white'}`}
+        <button className={`cursor-pointer rounded-full ${isDark ? 'darkmode-btn' : 'lightmode-btn'}`}
          onClick={toggleDark}>
 
           {isDark ?  <IoIosSunny size={30} /> : <MdDarkMode size={20}/> }

@@ -29,6 +29,9 @@
 .btn-primary{
   @apply flex items-center gap-1.5 text-xs font-medium text-gray-900 whitespace-nowrap bg-gray-50 px-4 py-2 rounded-full border border-gray-300  hover:bg-black hover:text-white cursor-pointer;
 }
+.btn-primary-dark {
+  @apply flex items-center gap-1.5 text-xs font-medium text-white whitespace-nowrap bg-gray-800 px-4 py-2 rounded-full border border-gray-300  hover:bg-white hover:text-black cursor-pointer;
+}
 
 .card{
   @apply bg-white p-6 shadow-md shadow-gray-300 border border-gray-200/50  rounded-xl transition-all duration-300 
@@ -50,4 +53,13 @@
 .delete-btn{
   @apply flex items-center gap-1.5 text-xs font-medium text-red-500 whitespace-nowrap px-4 py-2 rounded-lg border-1 border-red-500  hover:bg-red-500 hover:text-white cursor-pointer;
   
+}
+
+.lightmode-btn{
+  @apply flex items-center gap-1.5 text-xs font-medium text-gray-900 whitespace-nowrap bg-gray-50 px-4 py-2 rounded-full border border-gray-300  hover:bg-black hover:text-white cursor-pointer;
+
+}
+.darkmode-btn{
+  @apply flex items-center gap-1.5 text-xs font-medium text-white whitespace-nowrap bg-gray-900 px-4 py-2 rounded-full border border-gray-600  hover:bg-white hover:text-gray-400 cursor-pointer;
+
 }

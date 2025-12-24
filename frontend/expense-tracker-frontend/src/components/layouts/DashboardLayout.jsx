@@ -5,7 +5,7 @@ import {ThemeContext} from '../../context/ThemeContext.jsx'
 import SideMenu from "./SideMenu.jsx"
 
 export default function DashboardLayout({children, activeMenu }){
-  const {isDark} = useContext(ThemeContext);
+  const {isDark , toggleDark} = useContext(ThemeContext);
   const {user} = useContext(UserContext);
 
   return (
@@ -15,6 +15,7 @@ export default function DashboardLayout({children, activeMenu }){
           user && (
            <div className='flex w-full'>
             <div className='max-[1080px]:hidden'>
+              
               <SideMenu activeMenu ={activeMenu}/>
             </div>
             <div className='grow mx-5'>{children}</div>
