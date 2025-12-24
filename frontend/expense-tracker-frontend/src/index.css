@@ -43,15 +43,11 @@
   @apply p-6 rounded-2xl transition-all duration-300 
 }
 
-.card-btn{
-  @apply flex items-center gap-3 text-[12px] font-medium text-gray-700 hover:text-purple-500 bg-gray-50 hover:bg-purple-50 px-4 py-1.5 rounded-lg border border-gray-200/50 cursor-pointer;
-}
-
-.card-btn-dark{
-  @apply flex items-center gap-3 text-[12px] font-medium text-white hover:text-purple-500 bg-gray-50 hover:bg-purple-50 px-4 py-1.5 rounded-lg border border-gray-200/50 cursor-pointer;
-}
-
 .add-btn{
   @apply flex items-center gap-1.5 text-xs font-medium text-gray-900 whitespace-nowrap bg-gray-50 px-4 py-2 rounded-lg border border-black  hover:bg-black hover:text-white cursor-pointer;
+  
+}
+.delete-btn{
+  @apply flex items-center gap-1.5 text-xs font-medium text-red-500 whitespace-nowrap px-4 py-2 rounded-lg border-1 border-red-500  hover:bg-red-500 hover:text-white cursor-pointer;
   
 }

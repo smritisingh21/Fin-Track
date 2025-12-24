@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { ThemeContext } from '../context/ThemeContext';
 
 const DeleteAlert = ({content , onDelete}) => {
+
+  const {isDark} = useContext(ThemeContext)
   return (
     <div >
-      <p className="text-sm">
+      <p className={` ${isDark? 'text-gray-200' :'text-gray-500'}`}
+        onClick={onDelete}>
         {content}
       </p>
 
       <div className='flex justify-end mt-6'>
         <button 
         type='button'
-        className='add-btn add-btn-fill'
+        className={`delete-btn ${isDark? 'text-white' :'text-gray-500'}`}
         onClick={onDelete}
         >
           Delete

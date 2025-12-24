@@ -1,16 +1,19 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { LuUtensils , LuTrash2 } from 'react-icons/lu';
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
+import { ThemeContext } from '../../context/ThemeContext';
 
 
 
 const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelete}) => {
 
+    const {isDark} = useContext(ThemeContext)
+
     const getAmountStyles = () => {
     return type === "income" ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500"} 
 
   return (
-    <div className='group relative flex items-center gap-2 mt-4 p-3 rounded-lg hover:bg-gray-100/50'>
+    <div className={`group relative flex items-center gap-2 hover:transition-transform mt-4 p-3 rounded-lg ${isDark? 'hover:bg-gray-800/50' : 'hover:bg-gray-100/50'}`}>
         
        <div className='w-12 h-12 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full' >
             {icon?(
