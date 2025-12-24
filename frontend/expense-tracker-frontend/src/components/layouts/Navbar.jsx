@@ -1,7 +1,7 @@
 import React ,{useContext, useState}from 'react'
 import {HiOutlineMenu , HiOutlineX} from "react-icons/hi"
-import { MdDarkMode ,MdOutlineDarkMode} from "react-icons/md";
-import { IoIosSunny } from "react-icons/io";
+import { MdDarkMode} from "react-icons/md";
+import { IoIosSunny  } from "react-icons/io";
 import SideMenu from "./SideMenu"
 import { ThemeContext } from '../../context/ThemeContext';
 

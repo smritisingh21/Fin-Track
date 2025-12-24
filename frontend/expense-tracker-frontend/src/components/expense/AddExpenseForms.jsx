@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import { EmojiPickerPopup } from '../layouts/EmojiPickerPopup'
 import Input from '../layouts/Input.jsx'
+import Modal from '../layouts/Modal.jsx'
 
  const AddExpenseForms = ({ onAddExpense }) => {
     const [expense, setExpense] = useState({
@@ -15,7 +16,6 @@ import Input from '../layouts/Input.jsx'
 
   return (
     <div>
-      
         <EmojiPickerPopup
         icon = {expense.icon}
         onSelect ={(selectedIcon) => handleChange("icon" , selectedIcon)}/>
@@ -54,6 +54,7 @@ import Input from '../layouts/Input.jsx'
             </button>
         </div>
     </div>
+
   )
 }
 export default AddExpenseForms;

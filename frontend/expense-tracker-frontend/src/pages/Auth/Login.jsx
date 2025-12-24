@@ -6,11 +6,16 @@ import {validateEmail} from '../../utils/helper'
 import axiosInstance from '../../utils/axiosInstance'
 import { API_PATHS } from '../../utils/apiPaths'
 import { UserContext } from '../../context/UserContext'
+import { ThemeContext } from '../../context/ThemeContext'
+
+
 
 export default function Login() {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [error,setError] = useState(null);
+
+  const {isDark, toggleDark} =useContext(ThemeContext);
 
   const {updateUser, clearUser} = useContext(UserContext);
   const navigate = useNavigate();
@@ -53,11 +58,14 @@ export default function Login() {
   }}
   return (
     <AuthLayout>
+
     <div className="lg: w-70% h-3/4 md:h-full mt-30 flex flex-col justify-centre">
-        <h3 className='texl-xl font-semibold text-black'>Welcome Back</h3>
+        <h3 className={`${isDark? 'text-white' : 'text-black'}`}>Welcome Back</h3>
+           
         <p className='text-xs text-slate-700 mt-[5px] mb-6 '>
             Please enter your details to log in
         </p>
+        
 
         <form onSubmit={handleLogin}>
           <Input

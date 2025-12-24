@@ -10,23 +10,24 @@ export default function Input({type , value , label , onChange , placeholder}) {
         setShowPassword(!showPassword);
     }
   return (
-    <div className={`${isDark? 'bg-gray-900' :'bg-white'}`}>
-        <label className={`text-[13px] ${isDark? 'text-white' : 'text-slate-800 '}`}>{label}</label>
-        <div className='input-box'>
+    <div>
+
+        <label className={`text-[13px] ${isDark? 'text-white' : 'text-slate-800'}`}>{label}</label>
+        <div className={`${isDark? 'input-box-dark' : 'input-box'}`}>
             
             <input
             type={type == 'password'? showPassword ? 'text': 'password' :type }
             placeholder={placeholder}
-            className={`"w-full outline-none" ${isDark? 'bg-gray-900' :'bg-white'}`}
+            className="w-full outline-0 bg-transparent"
             value={value}
             onChange={(e) =>onChange(e)}
             />
 
-            {type === 'password' && ( // Show eye icon only for password input
+            {type === 'password' && ( 
             <>
-                {showPassword? ( // Show eye icon when password is visible
+                {showPassword? (
                     <FaRegEye size ={22}
-                    className= "text-primary cursor-pointer"
+                    className= "text-black size-2 cursor-pointer transition-all duration-150"
                     onClick={() => toggleShowPassword()}
                     />
                 ) : (

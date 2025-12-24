@@ -18,8 +18,8 @@ import { ThemeContext } from '../../context/ThemeContext.jsx'
       setIncome({...income ,[key] : value})
 
   return (
-    
-    <div className={`${isDark? 'bg-slate-900' : 'bg-white'}`}>
+
+    <div className='bg-transparent'>
       
         <EmojiPickerPopup
         icon = {income.icon}
