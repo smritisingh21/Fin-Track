@@ -9,6 +9,7 @@ import { API_PATHS } from '../../utils/apiPaths';
 import axiosInstance from '../../utils/axiosInstance';
 import uploadImage  from '../../utils/uploadImage';
 import { ThemeContext } from '../../context/ThemeContext';
+import { FaHeart } from 'react-icons/fa';
 
 
 
@@ -78,12 +79,14 @@ export default function Signup() {
   return (
 
     <AuthLayout>
-      <div className='lg:w-70% h-3/4 md:h-full flex flex-col justify-center'>
-        <h5 className={`text-3xl mb-4 font-medium ${isDark?'text-white' :'text-gray-600'}`}>
+      <div className="w-full max-w-md mx-auto flex flex-col justify-center mt-2">
+
+        <h5 className={`text-lg mb-0.3 font-medium ${isDark?'text-white' :'text-gray-600'}`}>
           Create an account</h5>
-        <p className={`${isDark?'text-white' :'text-gray-600'}`}>
+        <p className={` text-sm text ${isDark?'text-gray-600' :'text-gray-600'}`}>
           Join us today by entering your details below
         </p>
+
         <form onSubmit={handleSignup}>
 
           <ProfilePicSelector
@@ -115,15 +118,23 @@ export default function Signup() {
             />
           <div>  
             {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
-            <button type='submit' className='btn-primary'>
+
+             <div className='flex gap-3 mt-2'>
+            <button type='submit' className={`btn-primary`}>
               SIGN UP
             </button>
-            <p className='text-[13px] text-slate-800 mt-3'>
+            <p className={`text-[13px] text-slate-600 mt-3`}>
               Already have an account? {' '}
-              <Link to="/login" className='text-white onhover:underline font-medium'>
-              LOGIN
+              <Link to="/login" className={`text-white onhover:underline font-medium ${isDark? 'text-white' :'text-black'}`}>
+              <u>LOGIN</u>
               </Link>
-            </p></div>
+            </p>            
+            
+          </div>
+
+           <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
+
+            </div>
           </div>
          </form>
       </div>

@@ -7,7 +7,7 @@ import axiosInstance from '../../utils/axiosInstance'
 import { API_PATHS } from '../../utils/apiPaths'
 import { UserContext } from '../../context/UserContext'
 import { ThemeContext } from '../../context/ThemeContext'
-
+import { FaHeart } from 'react-icons/fa'
 
 
 export default function Login() {
@@ -59,12 +59,15 @@ export default function Login() {
   return (
     <AuthLayout>
 
-    <div className="lg: w-70% h-3/4 md:h-full mt-30 flex flex-col justify-centre">
-        <h3 className={`${isDark? 'text-white' : 'text-black'}`}>Welcome Back</h3>
-           
-        <p className='text-xs text-slate-700 mt-[5px] mb-6 '>
-            Please enter your details to log in
-        </p>
+   <div className="w-full max-w-md mx-auto flex flex-col">
+  <h3 className={`${isDark ? "text-white" : "text-black"} text-xl font-semibold`}>
+    Welcome Back
+  </h3>
+
+  <p className="text-xs text-slate-500 mt-1 mb-6">
+    Please enter your details to log in
+  </p>
+
         <form onSubmit={handleLogin}>
           <Input
             type = "text"
@@ -83,16 +86,24 @@ export default function Login() {
 
             {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
 
-            <button type='submit' className='btn-primary'>
+
+          <div className='flex gap-3'>
+              <button type='submit' className='btn-primary'>
               LOGIN
               </button>
 
+
             <p className='text-[13px] text-slate-800 mt-3' >
               Don't have an account? {" "}
-              <Link className='font-medium text-white underline' to='/register'>
-              SignUp
+              <Link to={"/register"}className={` onhover:underline font-medium ${isDark? 'text-white' :'text-black'}`}>
+              <u>SIGNUP</u>
               </Link>
             </p>
+          </div>
+
+         <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
+
+           
         </form>
     </div>
     </AuthLayout>
