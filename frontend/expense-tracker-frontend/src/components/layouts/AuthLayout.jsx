@@ -14,20 +14,25 @@ return (
   <div
     className={`relative min-h-screen flex items-center justify-center
     px-4 sm:px-6 lg:px-12 overflow-hidden
-    ${isDark ? "bg-neutral-900" : "bg-gray-100"}`}
+    ${isDark ? "bg-black/70" : "bg-white"}`}
   >
    
 
     {/*MAIN CARD */}
     <div
-      className={`relative z-10 w-full max-w-3xl p-6 sm:p-10 rounded-xl border-x
-      ${isDark ? "bg-black/80 text-white hover:border-gray-700 shadow-2xl shadow-gray-900/50" : "bg-white hover:border-gray-600/80"}`}
+      className={`relative z-10 w-full max-w-3xl p-6 sm:p-10 rounded-xl shadow-2xl
+      ${isDark ?
+         "bg-black text-white shadow-gray-100/10"
+         :
+          "bg-white  text-black  shadow-gray-600/50"}`}
     >
       <div className="flex justify-between items-center mb-8">
         <b className="text-2xl sm:text-3xl text-emerald-600">
           FinTrack
-          <span className="block sm:inline text-xs text-gray-500 sm:ml-3">
-            For your finances
+          <span className="block font-sans font-light  sm:inline text-xs text-gray-500 sm:ml-3">
+            <i>
+              For your finances
+            </i>
           </span>
         </b>
 

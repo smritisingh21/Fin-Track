@@ -125,7 +125,8 @@ export default function Signup() {
             </button>
             <p className={`text-[13px] text-slate-600 mt-3`}>
               Already have an account? {' '}
-              <Link to="/login" className={`text-white onhover:underline font-medium ${isDark? 'text-white' :'text-black'}`}>
+              <Link to="/login" className={` onhover:underline font-medium 
+                ${isDark? 'text-white' :'text-black'}`}>
               <u>LOGIN</u>
               </Link>
             </p>            
