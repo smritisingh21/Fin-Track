@@ -65,8 +65,6 @@ export default function Login() {
         <p className='text-xs text-slate-700 mt-[5px] mb-6 '>
             Please enter your details to log in
         </p>
-        
-
         <form onSubmit={handleLogin}>
           <Input
             type = "text"
@@ -91,7 +89,7 @@ export default function Login() {
 
             <p className='text-[13px] text-slate-800 mt-3' >
               Don't have an account? {" "}
-              <Link className='font-medium text-primary underline' to='/register'>
+              <Link className='font-medium text-white underline' to='/register'>
               SignUp
               </Link>
             </p>

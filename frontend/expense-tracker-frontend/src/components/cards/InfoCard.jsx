@@ -12,7 +12,8 @@ const InfoCard = ({icon, label, color, value}) =>{
       shadow-[0_8px_32px_0_rgba(31,38,135,0.15)]
       ${isDark 
         ? 'bg-slate-900/40 hover:bg-slate-900/50' 
-        : 'bg-white/30 hover:bg-white/40'}
+        : 'bg-white/30 hover:bg-white/40'
+      }
     `}>
         <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
 

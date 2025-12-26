@@ -8,7 +8,11 @@ const COLORS =["#075CF5" ,"#FA2C37","#FF6900"]
 
 const RecentIncomeWithChart = ({data,totalIncome}) => {
 
-        const {isDark} = useContext(ThemeContext);
+    const {isDark} = useContext(ThemeContext);
+    const CHART_COLORS = useMemo(() => {
+        return isDark ? ["#009866", "#6BED9B", "#6CBA84"] 
+          : ["#1E40AF", "#15803D", "#B91C1C"]; 
+    }, [isDark]);
 
     const chartData = useMemo(() => {
         if (!data || data.length === 0) {
@@ -31,7 +35,7 @@ const RecentIncomeWithChart = ({data,totalIncome}) => {
             data={chartData} 
             label ='Total income'
             totalAmount={`$${totalIncome}`}
-            colors={COLORS}
+            colors={CHART_COLORS}
             showTextAnchor
        />
        

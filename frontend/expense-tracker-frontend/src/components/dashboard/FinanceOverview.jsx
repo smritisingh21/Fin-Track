@@ -5,13 +5,13 @@ import { ThemeContext } from '../../context/ThemeContext';
 
 
 
- const FinanceOverview = ({totalBalance , totalIncome , totalExpense , mode}) => {
+ const FinanceOverview = ({totalBalance , totalIncome , totalExpense}) => {
 
     const { isDark } = useContext(ThemeContext);
 
     const CHART_COLORS = useMemo(() => {
         return isDark 
-            ? ["#60A5FA", "#4ADE80", "#FB7185"] 
+            ? ["#3A1DAD", "#009866", "#AD1D27"] 
             : ["#1E40AF", "#15803D", "#B91C1C"]; 
     }, [isDark]);
 

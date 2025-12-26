@@ -8,12 +8,15 @@ import { validateEmail } from '../../utils/helper';
 import { API_PATHS } from '../../utils/apiPaths';
 import axiosInstance from '../../utils/axiosInstance';
 import uploadImage  from '../../utils/uploadImage';
+import { ThemeContext } from '../../context/ThemeContext';
 
 
 
 // SignUp component for user registration
 
 export default function Signup() {
+   const {isDark} =useContext(ThemeContext);
+  
 
   const navigate = useNavigate()
 
@@ -76,15 +79,17 @@ export default function Signup() {
 
     <AuthLayout>
       <div className='lg:w-70% h-3/4 md:h-full flex flex-col justify-center'>
-        <h3 className=' text-3xl font-medium  p-2'>
-          Create an account</h3>
-        <p>
+        <h5 className={`text-3xl mb-4 font-medium ${isDark?'text-white' :'text-gray-600'}`}>
+          Create an account</h5>
+        <p className={`${isDark?'text-white' :'text-gray-600'}`}>
           Join us today by entering your details below
         </p>
         <form onSubmit={handleSignup}>
+
           <ProfilePicSelector
           image ={profilePicture}
-          setImage={setProfilePicture}/>
+          setImage={setProfilePicture}
+          className={`mb-2`}/>
 
           <div className='flex flex-col gap-4'>
 
@@ -115,7 +120,7 @@ export default function Signup() {
             </button>
             <p className='text-[13px] text-slate-800 mt-3'>
               Already have an account? {' '}
-              <Link to="/login" className='text-primary onhover:underline font-medium'>
+              <Link to="/login" className='text-white onhover:underline font-medium'>
               LOGIN
               </Link>
             </p></div>

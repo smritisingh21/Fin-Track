@@ -23,7 +23,7 @@
   @apply w-full flex justify-between gap-2 text-sm text-black bg-gray-50 rounded px-4 py-3 mb-4 mt-3 border-1 border-slate-500 outline-none;
 }
 .input-box-dark{
-  @apply w-full flex justify-between gap-2 text-sm text-white bg-slate-800 rounded px-4 py-3 mb-4 mt-3 border-1 border-gray-500 outline-none;
+  @apply w-full flex justify-between gap-2 text-sm text-white bg-slate-900 rounded px-4 py-3 mb-4 mt-3 border-1 border-gray-500 outline-none;
 }
 
 .btn-primary{
