@@ -1,7 +1,10 @@
-import React,{useRef,useState} from 'react'
-import {LuUser , LuUpload , LuTrash} from 'react-icons/lu'
+import React,{useContext, useRef,useState} from 'react'
+import { LuUpload , LuTrash} from 'react-icons/lu'
+import { MdPerson } from 'react-icons/md';
+import { ThemeContext } from '../context/ThemeContext';
 
 export default function ProfilePicSelector({image, setImage}) {
+    const {isDark} = useContext(ThemeContext);
     const inputRef = useRef(null);
     const [previewURL, setPreviewURL] = useState(null);
 
@@ -37,13 +40,16 @@ export default function ProfilePicSelector({image, setImage}) {
         className='hidden'
         />
         {!image? (
-            <div className="w-24 h-24 flex items-center justify-center bg-purple-100 rounded-full relative">
+            <div className="w-24 h-24 flex items-center justify-center bg-green-200/70 rounded-full relative">
 
-                <LuUser className='text-4xl text-primary'/>
+                <MdPerson className={`text-5xl text-gray-300${isDark? 'text-amber-50' : 'text-gray-300'}`}/>
 
                 <button 
                 type ="button" 
-                className='w-8 h-8 cursor-pointer flex items-center justify-center bg-primary text-white m-2 rounded-full absolute -bottom-1 -right-1' 
+                className={`w-8 h-8 cursor-pointer flex items-center 
+                    justify-center bg-green-600 text-white m-2 
+                    rounded-full absolute -bottom-1 -right-1
+                    `} 
                 onClick={onChooseFile}>
                 <LuUpload/>
                 </button>
