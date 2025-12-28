@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
     },
       profileImageUrl: {
         type: String,
-        default: "https://stock.adobe.com/search?k=profile+placeholder", // You can provide a default avatar URL here
+        default: "", // You can provide a default avatar URL here
     },
 }, {
     timestamps: true,

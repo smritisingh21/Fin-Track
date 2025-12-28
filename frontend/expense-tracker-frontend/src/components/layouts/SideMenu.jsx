@@ -5,24 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import CharAvatar from '../cards/CharAvatar.jsx'
 import { UserCircleIcon } from '@heroicons/react/20/solid'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
-
+import ProfilePicSelector from '../ProfilePicSelector.jsx'
 const SideMenu = ({activeMenu}) => {
     const {isDark} = useContext(ThemeContext);
     const {user , clearUser} = useContext(UserContext)
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.clear();
-        clearUser();
-        navigate("/login");
-    }
-
-    const handleClick= (route) =>{
-        if(route == logout){
-            handleLogout();
-            return;
-        }
-    }
 
 
   return <div className={`w-64 h-[calc(100vh-61px)] border-r border-gray-400/30 p-5 sticky top-[61px] z-20 ${isDark? 'bg-[#030712]': 'bg-white'}`}>
@@ -41,12 +28,13 @@ const SideMenu = ({activeMenu}) => {
                     width = "w-20"
                     height ="h-20"
                     style="text-xl"
+                    
                 />
+                
                 )
-
             }
             <h5 className={`font-medium leading-6 ${isDark? 'text-white': 'text-black'}`}>
-                {user?.name || ""}
+                {user?.name}
             </h5>
             </div>
 

@@ -12,13 +12,8 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { FaHeart } from 'react-icons/fa';
 
 
-
-// SignUp component for user registration
-
 export default function Signup() {
-   const {isDark} =useContext(ThemeContext);
-  
-
+  const {isDark} =useContext(ThemeContext);
   const navigate = useNavigate()
 
   const [profilePicture, setProfilePicture] = useState(null);
@@ -31,52 +26,51 @@ export default function Signup() {
 
   let profileImageUrl = "";
 
- const  handleSignup = async (e) => {
+ const handleSignup = async (e) => {
     e.preventDefault();
 
+    // 1. Validation checks
     if (!name || !email || !password) {
-      setError("All fields are required");
-      return;
+        setError("All fields are required");
+        return;
     }
     if (!validateEmail(email)) {
-      setError("Invalid email format");
-      return;
-   }
-   if(!password){
-    return("please enter your password")
-
-   }
-   //SIGN UP Api call
-  try{
-    //upload image if present
-    if(profilePicture){
-      const imageUploadRes = await uploadImage(profilePicture)
-      profileImageUrl = imageUploadRes.imageUrl || "";
+        setError("Invalid email format");
+        return;
     }
+
+    // 2. Create FormData instead of a plain JSON object
+    const formData = new FormData();
     
-    const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER,{
-    name,
-    email,
-    password,
-    profileImageUrl
-    })
-
-    const {token , user} = response.data;
-
-    if(token){
-    localStorage.setItem("token" ,token);
-    updateUser(user);
-    navigate("/dashboard")
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    
+    // 3. Append the profile picture file if present
+    if (profilePicture) {
+        formData.append("image", profilePicture); // 'image' must match upload.single("image")
     }
-   }catch(err){
-    if(err.response && err.response.data.message ){
-    setError(err.response.data.message)
-   } 
-  }
-  }
 
+    try{
+        const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, formData);
 
-  return (
+        const { token, user } = response.data;
+
+        if (token) {
+            localStorage.setItem("token", token);
+            updateUser(user);
+            navigate("/dashboard");
+        }
+    } catch (err) {
+        if (err.response && err.response.data.message) {
+            setError(err.response.data.message);
+        } else {
+            setError("Something went wrong. Please try again.");
+        }
+    }
+};
+
+return (
 
     <AuthLayout>
       <div className="w-full max-w-md mx-auto flex flex-col justify-center mt-2">

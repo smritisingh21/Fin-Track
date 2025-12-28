@@ -25,7 +25,7 @@ app.use( //global middleware
 
     }
 ))
-
+app.use(express.urlencoded())
 app.use(express.json());
 connectDB();
 
@@ -33,8 +33,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/income", incomeRoutes);
 app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
-
-app.use('/upload' , express.static(path.join(process.cwd() ,"upload")))
+app.use('/uploads' , express.static(path.join(process.cwd() ,"uploads")))
 
 const PORT = process.env.PORT || 8000;
 

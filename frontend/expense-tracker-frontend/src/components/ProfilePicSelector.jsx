@@ -4,6 +4,8 @@ import { MdPerson } from 'react-icons/md';
 import { ThemeContext } from '../context/ThemeContext';
 
 export default function ProfilePicSelector({image, setImage}) {
+
+    
     const {isDark} = useContext(ThemeContext);
     const inputRef = useRef(null);
     const [previewURL, setPreviewURL] = useState(null);
