@@ -2,6 +2,7 @@ import React, { useMemo } from 'react' // 👈 Import useMemo
 import { CustomPieChart } from '../charts/CustomPieChart'
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
+import { FaRupeeSign } from 'react-icons/fa';
 import { EmptyLayout } from '../layouts/EmptyLayout';
 
 
@@ -37,7 +38,7 @@ import { EmptyLayout } from '../layouts/EmptyLayout';
        <CustomPieChart
         data={balanceData} 
         label ='Total balance'
-        totalAmount={`${totalBalance}/-`}
+        totalAmount={`${totalBalance}`}
         colors={CHART_COLORS}
         isDark={isDark}
         showTextAnchor

@@ -4,9 +4,15 @@ import TransactionInfoCard from '../cards/TransactionInfoCard'
 import moment from 'moment'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
+import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
+
+
+
+
 const RecentTransactions = ({transactions}) => {
 
     const {isDark} = useContext(ThemeContext);
+    let hasTransactions = transactions.length > 0 
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
@@ -14,18 +20,21 @@ const RecentTransactions = ({transactions}) => {
           
         </div>
 
-        <div>
-            {transactions?.slice(0,5).map((item) =>(
+        <div className='mt-6'>
+        {hasTransactions?
+            (transactions?.slice(0,5).map((income) =>(
                 <TransactionInfoCard
-                    key={item._id}
-                    title={item.category? item.category : item.source}
-                    icon ={item.icon}
-                    date={moment(item.date).format('ll')}
-                    amount={item.amount}
-                    type= {item.type}
+                    key={income._id}
+                    title={income.source}
+                    icon ={income.icon}
+                    date={moment(income.date).format('ll')}
+                    amount={income.amount}
+                    type= "income"
                     hideDeleteBtn
-                />
-            ))}
+                />))):(
+                  <EmptyLayout type='transaction'/>
+                )
+          }
         </div>
     </div>
   )

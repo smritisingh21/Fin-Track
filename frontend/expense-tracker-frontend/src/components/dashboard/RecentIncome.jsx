@@ -4,10 +4,14 @@ import { LuArrowRight } from 'react-icons/lu'
 import moment from 'moment'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
+import SimpleEmpty from '../layouts/SimpleEmpty.jsx'
+import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
 
 const RecentIncome = ({transactions , onseeMore}) => {
 
   const {isDark} = useContext(ThemeContext);
+  const hasTransactions = transactions && transactions.length > 0;
+
   
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
@@ -20,7 +24,8 @@ const RecentIncome = ({transactions , onseeMore}) => {
         </div>
 
         <div className='mt-6'>
-            {transactions?.slice(0,5).map((income) =>(
+        {hasTransactions?
+            (transactions?.slice(0,5).map((income) =>(
                 <TransactionInfoCard
                     key={income._id}
                     title={income.source}
@@ -29,8 +34,10 @@ const RecentIncome = ({transactions , onseeMore}) => {
                     amount={income.amount}
                     type= "income"
                     hideDeleteBtn
-                />
-          ))}
+                />))):(
+                  <EmptyLayout type='income'/>
+                )
+          }
         </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import CustomTooltip from './CustomTooltip.jsx'
 import CustomLegend from './CustomLegend.jsx'
+import { FaRupeeSign } from 'react-icons/fa'
 
 import {PieChart, Pie, Cell ,Tooltip, ResponsiveContainer , Legend} from 'recharts'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
@@ -51,7 +52,7 @@ export const CustomPieChart = ({data , label , totalAmount ,colors, showTextAnch
                 fontSize='24px'
                 fontWeight='semi-bold'
                 >
-                {totalAmount}
+                <FaRupeeSign/>{totalAmount}
                 </text>
                 </>
             )}

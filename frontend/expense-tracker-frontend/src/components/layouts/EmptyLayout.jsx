@@ -14,11 +14,20 @@ export const EmptyLayout = ({type}) => {
         <FaMoneyBillWave size={32} />
       </div>
       <h3 className={`text-base font-bold ${isDark ? 'text-zinc-300' : 'text-gray-700'}`}>
-        No {type}s added yet
+        No {type}s  yet !
       </h3>
-      <p className={`text-sm text-center mt-1 max-w-[200px] ${isDark ? 'text-zinc-500' : 'text-gray-400'}`}>
+      {
+        type != 'transaction' ? (
+       <p className={`text-sm text-center mt-3 max-w-[200px] ${isDark ? 'text-zinc-500' : 'text-gray-400'}`}>
         Start tracking your finances by adding your first {type}.
       </p>
+        ):(
+        <p className={`text-sm text-center mt-3 max-w-[200px] ${isDark ? 'text-zinc-500' : 'text-gray-400'}`}>
+        Start tracking your finances by adding incomes and expenses .
+      </p>
+        )
+      }
+     
     </div>
   );
 }

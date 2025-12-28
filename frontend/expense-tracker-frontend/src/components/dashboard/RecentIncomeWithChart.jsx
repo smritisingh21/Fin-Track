@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { CustomPieChart } from '../charts/CustomPieChart'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
+import { FaRupeeSign } from 'react-icons/fa'
 
 const COLORS =["#075CF5" ,"#FA2C37","#FF6900"]
 
@@ -34,7 +35,7 @@ const RecentIncomeWithChart = ({data,totalIncome}) => {
         <CustomPieChart
             data={chartData} 
             label ='Total income'
-            totalAmount={`$${totalIncome}`}
+            totalAmount={`${totalIncome} /-`}
             colors={CHART_COLORS}
             showTextAnchor
        />
