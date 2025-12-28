@@ -19,7 +19,7 @@ const SideMenu = ({activeMenu}) => {
                 <img
                 src = { user?.profileImageUrl || ``}
                 alt ="profile image"
-                className={`w-20 h-20 bg-slate-400 rounded-full${isDark? 'bg-gray-800': 'bg-white'}`}
+                className={`w-20 h-20 bg-slate-400 rounded-full ${isDark? 'bg-gray-800': 'bg-white'}`}
                 /> )
                 :
                 (
