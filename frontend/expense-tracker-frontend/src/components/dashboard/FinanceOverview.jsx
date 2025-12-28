@@ -2,6 +2,7 @@ import React, { useMemo } from 'react' // 👈 Import useMemo
 import { CustomPieChart } from '../charts/CustomPieChart'
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
+import { EmptyLayout } from '../layouts/EmptyLayout';
 
 
 
@@ -32,8 +33,8 @@ import { ThemeContext } from '../../context/ThemeContext';
               Overview
             </h5>
         </div>
-
-        <CustomPieChart
+     
+       <CustomPieChart
         data={balanceData} 
         label ='Total balance'
         totalAmount={`${totalBalance}/-`}
@@ -41,8 +42,6 @@ import { ThemeContext } from '../../context/ThemeContext';
         isDark={isDark}
         showTextAnchor
         />
-
-
     </div>
   )
 }

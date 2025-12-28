@@ -9,6 +9,7 @@ import DeleteAlert from '../../components/DeleteAlert';
 import axiosInstance from '../../utils/axiosInstance';
 import API_PATHS from '../../utils/apiPaths';
 import toast from 'react-hot-toast';
+import { RiLoader2Fill } from 'react-icons/ri';
 
 
 export default function Expense() {
@@ -117,23 +118,32 @@ export default function Expense() {
   return (
      <DashboardLayout activeMenu="Expenses">
        <div className=' my-5 mx-auto'>
-        <div className='grid grid-cols-1 gap-6'>
-          <div>
 
+         {
+          (!expenseData || loading) ? (
+            <div className='flex justify-center items-center gap-3'>
+            <div className='animate-spin text-white'><RiLoader2Fill size={40} /></div>
+                <div className='text-white text-center py-20'>Loading your expense data...</div>
+            </div>
+                       
+          )
+         : 
+          (
+         <div className='grid grid-cols-1 gap-6'>
+          <div>
             <ExpenseOverview 
             transactions ={expenseData}
             onAddExpense={() => setOpenAddExpenseModal(true)}
             />
           </div>
          
-           <ExpenseList transactions={expenseData}
+         <ExpenseList transactions={expenseData}
             onDelete={(id) =>{setOpenDeleteAlert({show : true , data : id}) }}
             onDownload={DownloadExpenseDetails}
-            />
+          />
             
         </div>
-
-
+        )}
         <Modal title ='Add expense' 
         isOpen={openAddExpenseModal} 
         onClose={() => setOpenAddExpenseModal(false)}>

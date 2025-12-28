@@ -34,7 +34,7 @@ app.use("/api/v1/income", incomeRoutes);
 app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 
-app.use('/uploads' , express.static(path.join(__dirname ,"upload")))
+app.use('/upload' , express.static(path.join(process.cwd() ,"upload")))
 
 const PORT = process.env.PORT || 8000;
 

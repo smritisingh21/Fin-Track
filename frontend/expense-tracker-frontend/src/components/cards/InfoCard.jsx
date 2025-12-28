@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext';
+import { FaRupeeSign } from 'react-icons/fa';
 
 const InfoCard = ({icon, label, color, value}) =>{
 
@@ -29,7 +30,8 @@ const InfoCard = ({icon, label, color, value}) =>{
         <div className=''>
             <h6 className={` mb-1 ${isDark? 'text-white' : 'text-gray-900'}`}>{label}</h6>
             {/* <h6 className='text-white'>{label}</h6> */}
-            <span className={`text-[18px] ${isDark? 'text-white' : 'text-gray-900'}`}>{value} /-</span>
+            <span className={`text-[18px]  flex gap-2 items-center ${isDark? 'text-white' : 'text-gray-900'}`}>
+              <FaRupeeSign/>{value} /-</span>
             {/* <span className='text-white'>{value} /-</span> */}
         </div>
     </div>

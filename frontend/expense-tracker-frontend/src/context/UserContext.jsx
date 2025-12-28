@@ -9,7 +9,6 @@ const UserProvider = ({children}) =>{
     const updateUser = (userData) =>{
         setUser(userData);
     }
-
     const clearUser = () =>{
         setUser(null);
     }

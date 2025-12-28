@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+      profileImageUrl: {
+        type: String,
+        default: "https://stock.adobe.com/search?k=profile+placeholder", // You can provide a default avatar URL here
+    },
 }, {
     timestamps: true,
 });
@@ -28,7 +32,6 @@ UserSchema.pre("save", async function (next) {
     // const salt = await bcrypt.genSalt(10); //generating salt , adds random string to password before hashing
     this.password = await bcrypt.hash(this.password, 10); //hashing the password with salt
 });
-
 
 
 UserSchema.methods.matchPassword = async function (candidatePassword) {

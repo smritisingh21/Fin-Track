@@ -4,7 +4,6 @@ import {LuTrendingUpDown} from 'react-icons/lu'
 import { ThemeContext } from '../../context/ThemeContext'
 import { MdDarkMode } from 'react-icons/md'
 import { IoIosSunny  } from "react-icons/io";
-import { FaHeart } from 'react-icons/fa'
 
 
 export default function AuthLayout({ children }) {

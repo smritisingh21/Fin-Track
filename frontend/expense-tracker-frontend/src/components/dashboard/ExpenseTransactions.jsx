@@ -4,8 +4,9 @@ import TransactionInfoCard from '../cards/TransactionInfoCard.jsx'
 import moment from 'moment'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
+import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
 
-export const ExpenseTransactions = ({transactions, onseeMore, mode}) => {
+export const ExpenseTransactions = ({transactions, onseeMore}) => {
 
       const {isDark} = useContext(ThemeContext);
   
@@ -21,7 +22,7 @@ export const ExpenseTransactions = ({transactions, onseeMore, mode}) => {
         </div>
 
         <div className='mt-6'>
-            {transactions?.slice(0,5).map((expense) => (
+        {transactions?.slice(0,5).map((expense) => (
                 <TransactionInfoCard
                     key={expense._id}
                     title={expense.category}
@@ -29,9 +30,9 @@ export const ExpenseTransactions = ({transactions, onseeMore, mode}) => {
                     amount={expense.amount}
                     type= "expense"
                     hideDeleteBtn
-                />
-          ))}
+                />))
+          }
         </div>
     </div>
-  )
+      )
 }

@@ -12,6 +12,8 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
     const getAmountStyles = () => {
     return type === "income" ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500"} 
 
+    
+
   return (
     <div className={`group relative flex items-center gap-2 hover:transition-transform mt-4 p-3 rounded-lg ${isDark? 'hover:bg-gray-800/50' : 'hover:bg-gray-100/50'}`}>
         

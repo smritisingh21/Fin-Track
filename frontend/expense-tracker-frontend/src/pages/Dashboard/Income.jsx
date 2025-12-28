@@ -11,6 +11,7 @@ import DeleteAlert from '../../components/DeleteAlert.jsx';
 import useUserAuth from '../../hooks/useUserAuth.jsx';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext.jsx';
+import { RiLoader2Fill } from 'react-icons/ri';
 
 export default function Income() {
   useUserAuth();
@@ -114,10 +115,26 @@ export default function Income() {
     fetchIncomeDetails();
     return(() => {})
   },[])
+  
 
+
+  
   return (
+    
+    ( 
      <DashboardLayout activeMenu="Income">
        <div className=' my-5 mx-auto'>
+
+        {
+        (!incomeData || loading) ? (
+              <div className='flex justify-center items-center gap-3'>
+                <div className='animate-spin text-white'><RiLoader2Fill size={40} /></div>
+                 <div className='text-white text-center py-20'>Loading your income data...</div>
+              </div>
+               
+        )
+         : 
+        (
         <div className='grid grid-cols-1 gap-6'>
           <div>
             <IncomeOverview 
@@ -131,14 +148,14 @@ export default function Income() {
             onDownload={handleDownloadIncomeDetails}
             />
             
-        </div>
+         </div>
 
-
+        )}
         <Modal title ='Add income' 
         isOpen={openAddincomeModal} 
         onClose={() => setOpenAddIncomeModal(false)}>
 
-          <AddIncomeForms onAddIncome={handleAddIncomes}></AddIncomeForms>
+        <AddIncomeForms onAddIncome={handleAddIncomes}></AddIncomeForms>
         </Modal>
 
         <Modal
@@ -146,13 +163,15 @@ export default function Income() {
           onClose={() => setOpenDeleteAlert({show :false ,  data: null})}
           title="Delete Income"
           >
-            <DeleteAlert
-            content = "Are you sure you want to delete this income?"
-            onDelete={() => handleDeleteIncome(openDeleteAlert.data)}
-            />
+          <DeleteAlert
+          content = "Are you sure you want to delete this income?"
+          onDelete={() => handleDeleteIncome(openDeleteAlert.data)}
+          />
             
-          </Modal>
+        </Modal>
+        
         </div>
      </DashboardLayout>
+    )
   )
 }

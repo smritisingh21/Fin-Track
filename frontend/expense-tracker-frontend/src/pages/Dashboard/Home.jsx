@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance.js';
 import { API_PATHS } from '../../utils/apiPaths.js';
 import {IoMdCard }from "react-icons/io"
-import{LuHandCoins , LuWalletMinimal} from "react-icons/lu"
+import{LuHandCoins , LuLoaderCircle, LuLoaderPinwheel, LuWalletMinimal} from "react-icons/lu"
 import { addThousandsSeparator } from '../../utils/helper.js';
 import DashboardLayout from '../../components/layouts/DashboardLayout';
 import useUserAuth from "../../hooks/useUserAuth.jsx"
@@ -14,6 +14,7 @@ import { ExpenseTransactions } from '../../components/dashboard/ExpenseTransacti
 import { Last30daysExpense } from '../../components/dashboard/Last30daysExpense.jsx';
 import RecentIncomeWithChart from '../../components/dashboard/RecentIncomeWithChart.jsx'
 import RecentIncome from '../../components/dashboard/RecentIncome.jsx'
+import { RiLoader2Fill } from 'react-icons/ri';
 
 export default function Home() {
 
@@ -51,7 +52,11 @@ export default function Home() {
       <div className=' my-5 mx-auto '>
       
       {(!dashboardData || loading) ? (
-        <div className='text-white text-center py-20'>Loading Dashboard Data...</div>
+      <div className='flex justify-center items-center gap-3'>
+        <div className='animate-spin text-white'><RiLoader2Fill size={40} /></div>
+         <div className='text-white text-center py-20'>Loading Dashboard Data...</div>
+      </div>
+       
       ) : (
         <>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
@@ -75,10 +80,9 @@ export default function Home() {
           color = "bg-red-700"
           />
           </div>
+
+          
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
-
-
-
 
           <FinanceOverview 
               totalBalance ={dashboardData?.totalBalance || 0 }
@@ -116,5 +120,6 @@ export default function Home() {
       )}
      </div>
     </DashboardLayout>
+   
   )
 }
