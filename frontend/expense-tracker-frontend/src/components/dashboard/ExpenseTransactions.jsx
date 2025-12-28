@@ -9,20 +9,31 @@ import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
 export const ExpenseTransactions = ({transactions, onseeMore}) => {
 
       const {isDark} = useContext(ThemeContext);
+       const hasTransactions = transactions && transactions.length > 0;
+
   
   return (
+
     <div className={` ${isDark? 'card-dark': 'card'}`}>
+      
+
         <div className='flex items-center justify-between'>
-          <h5 className={` text-lg mb-2 ${isDark? 'text-white':'text-gray-900'}`}>Expenses</h5>
-          <button className='btn-primary' onClick={onseeMore}>
-              See All 
-              <LuArrowRight className='text-base'/>
+          <h5 className={` text-lg mb-2 ${isDark? 'text-white':'text-gray-900'}`}> Recent Expenses</h5>
+           {hasTransactions && (
+          <button 
+            className="group flex items-center gap-2 text-sm font-bold text-emerald-500 hover:text-emerald-600 transition-all" 
+            onClick={onseeMore}
+          >
+            See All 
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </button>
+        )}
 
         </div>
 
         <div className='mt-6'>
-        {transactions?.slice(0,5).map((expense) => (
+        {hasTransactions?
+        (transactions.slice(0,5).map((expense) => (
                 <TransactionInfoCard
                     key={expense._id}
                     title={expense.category}
@@ -30,7 +41,10 @@ export const ExpenseTransactions = ({transactions, onseeMore}) => {
                     amount={expense.amount}
                     type= "expense"
                     hideDeleteBtn
-                />))
+                />))):(
+                  <EmptyLayout type="expense"/>
+                )
+
           }
         </div>
     </div>
