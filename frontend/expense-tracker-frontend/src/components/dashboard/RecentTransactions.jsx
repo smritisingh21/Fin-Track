@@ -19,19 +19,19 @@ const RecentTransactions = ({transactions}) => {
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
             <h5 className={`text-lg ${isDark? 'text-amber-50': 'text-black'}`}>Recent transactions</h5>
-          
         </div>
 
         <div className='mt-6'>
+
         {hasTransactions?
-            (transactions?.slice(0,5).map((income) =>(
+            (transactions?.slice(0,5).map((transaction) =>(
                 <TransactionInfoCard
-                    key={income._id}
-                    title={income.source}
-                    icon ={income.icon}
-                    date={moment(income.date).format('ll')}
-                    amount={income.amount}
-                    type= "income"
+                    key={transaction._id}
+                    title={transaction.source || transaction.category}
+                    icon ={transaction.icon}
+                    date={moment(transaction.date).format('ll')}
+                    amount={transaction.amount}
+                    type= {transaction.type}
                     hideDeleteBtn
                 />))):(
                   <EmptyLayout type='transaction' clickEvent={() => navigate("/income")}/>

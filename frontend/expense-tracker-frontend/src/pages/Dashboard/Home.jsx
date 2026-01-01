@@ -91,7 +91,6 @@ export default function Home() {
           />
           <RecentTransactions 
           transactions ={dashboardData?.recentTransactions}
-          onseeMore ={()=> navigate("/expenses")}
           />
 
 
