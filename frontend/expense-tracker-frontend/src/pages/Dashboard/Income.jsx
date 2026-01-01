@@ -117,7 +117,6 @@ export default function Income() {
   },[])
   
 
-
   
   return (
     
@@ -126,7 +125,7 @@ export default function Income() {
        <div className=' my-5 mx-auto'>
 
         {
-        (!incomeData || loading) ? (
+        (loading) ? (
               <div className='flex justify-center items-center gap-3'>
                 <div className='animate-spin text-white'><RiLoader2Fill size={40} /></div>
                  <div className='text-white text-center py-20'>Loading your income data...</div>

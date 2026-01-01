@@ -10,6 +10,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import uploadImage  from '../../utils/uploadImage';
 import { ThemeContext } from '../../context/ThemeContext';
 import { FaHeart } from 'react-icons/fa';
+import {GoogleLogin , googleLogout} from '@react-oauth/google'
 
 
 export default function Signup() {
@@ -81,7 +82,7 @@ return (
           Join us today by entering your details below
         </p>
 
-        <form onSubmit={handleSignup}>
+        <form onSubmit={handleSignup} className='mb-4'>
 
           <ProfilePicSelector
           image ={profilePicture}
@@ -111,9 +112,10 @@ return (
               placeholder="Minimum 8 characters"
             />
           <div>  
+
             {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
 
-             <div className='flex gap-3 mt-2'>
+             <div className='flex gap-3 mt-2 mb-6'>
             <button type='submit' className={`btn-primary`}>
               SIGN UP
             </button>
@@ -127,11 +129,22 @@ return (
             
           </div>
 
+           <GoogleLogin 
+          onSuccess={() => navigate('/dashboard')}
+          onError={() => console.log("Error logging in")}
+          
+          auto_select={true}
+
+        
+        />
+
            <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
 
             </div>
           </div>
          </form>
+
+           
       </div>
     </AuthLayout>
     )

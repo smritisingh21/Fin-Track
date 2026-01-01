@@ -4,7 +4,6 @@ import { LuArrowRight } from 'react-icons/lu'
 import moment from 'moment'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
-import SimpleEmpty from '../layouts/SimpleEmpty.jsx'
 import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
 
 const RecentIncome = ({transactions , onseeMore}) => {

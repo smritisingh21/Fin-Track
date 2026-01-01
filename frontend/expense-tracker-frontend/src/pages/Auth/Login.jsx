@@ -8,6 +8,7 @@ import { API_PATHS } from '../../utils/apiPaths'
 import { UserContext } from '../../context/UserContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { FaHeart } from 'react-icons/fa'
+import {GoogleLogin , googleLogout} from '@react-oauth/google'
 
 
 export default function Login() {
@@ -20,6 +21,9 @@ export default function Login() {
   const {updateUser, clearUser} = useContext(UserContext);
   const navigate = useNavigate();
 
+  function handleLogout () {
+    googleLogout()
+  }
   //handle login form submit
  
   const handleLogin= async (e) => { 
@@ -68,7 +72,7 @@ export default function Login() {
     Please enter your details to log in
   </p>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} className='mb-5'>
           <Input
             type = "text"
             label ="Email Address"
@@ -96,15 +100,24 @@ export default function Login() {
             <p className='text-[13px] text-slate-800 mt-3' >
               Don't have an account? {" "}
               <Link to={"/register"}className={` onhover:underline font-medium ${isDark? 'text-white' :'text-black'}`}>
-              <u>SIGNUP</u>
+              <u>Create a new account</u>
               </Link>
             </p>
+
           </div>
-
-         <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
-
            
         </form>
+         <GoogleLogin 
+            onSuccess={(response) => {
+              console.log(response)
+              navigate('/dashboard')}}
+            onError={() => console.log("Error logging in")}
+            auto_select={true}
+          />
+         <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
+
+     
+
     </div>
     </AuthLayout>
   )

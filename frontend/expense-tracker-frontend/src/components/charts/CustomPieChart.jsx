@@ -52,7 +52,7 @@ export const CustomPieChart = ({data , label , totalAmount ,colors, showTextAnch
                 fontSize='24px'
                 fontWeight='semi-bold'
                 >
-                <FaRupeeSign/>{totalAmount}
+                ₹{totalAmount}
                 </text>
                 </>
             )}
