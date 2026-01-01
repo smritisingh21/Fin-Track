@@ -5,14 +5,16 @@ import moment from 'moment'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
 import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
-
-
+import { useNavigate } from 'react-router'
 
 
 const RecentTransactions = ({transactions}) => {
 
+    const navigate = useNavigate();
     const {isDark} = useContext(ThemeContext);
-    let hasTransactions = transactions.length > 0 
+
+    const hasTransactions = transactions && transactions.length > 0 
+
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div className='flex items-center justify-between'>
@@ -32,7 +34,7 @@ const RecentTransactions = ({transactions}) => {
                     type= "income"
                     hideDeleteBtn
                 />))):(
-                  <EmptyLayout type='transaction'/>
+                  <EmptyLayout type='transaction' clickEvent={() => navigate("/income")}/>
                 )
           }
         </div>

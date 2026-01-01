@@ -9,6 +9,7 @@ import { UserContext } from '../../context/UserContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { FaHeart } from 'react-icons/fa'
 import {GoogleLogin , googleLogout} from '@react-oauth/google'
+import { jwtDecode } from "jwt-decode";
 
 
 export default function Login() {
@@ -63,16 +64,16 @@ export default function Login() {
   return (
     <AuthLayout>
 
-   <div className="w-full max-w-md mx-auto flex flex-col">
-  <h3 className={`${isDark ? "text-white" : "text-black"} text-xl font-semibold`}>
-    Welcome Back
-  </h3>
+  <div className="w-full max-w-md mx-auto flex flex-col">
+    <h3 className={`${isDark ? "text-white" : "text-black"} text-xl font-semibold`}>
+      Welcome Back
+    </h3>
 
-  <p className="text-xs text-slate-500 mt-1 mb-6">
+    <p className="text-xs text-slate-500 mt-1 mb-6">
     Please enter your details to log in
-  </p>
+    </p>
 
-        <form onSubmit={handleLogin} className='mb-5'>
+    <form onSubmit={handleLogin} className='mb-5'>
           <Input
             type = "text"
             label ="Email Address"
@@ -91,33 +92,32 @@ export default function Login() {
             {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
 
 
-          <div className='flex gap-3'>
-              <button type='submit' className='btn-primary'>
-              LOGIN
+          <div className=''>
+              <button type='submit' className='btn-primary w-full p-3 mb-4 flex items-center justify-center '>
+              LOGIN 
               </button>
-
-
-            <p className='text-[13px] text-slate-800 mt-3' >
-              Don't have an account? {" "}
-              <Link to={"/register"}className={` onhover:underline font-medium ${isDark? 'text-white' :'text-black'}`}>
-              <u>Create a new account</u>
-              </Link>
-            </p>
-
           </div>
+
+        <p className='text-gray-400 ml-12'>---------OR CONTINUE WITH----------</p>
            
-        </form>
-         <GoogleLogin 
-            onSuccess={(response) => {
-              console.log(response)
-              navigate('/dashboard')}}
-            onError={() => console.log("Error logging in")}
-            auto_select={true}
-          />
-         <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
+   </form>
 
-     
+      <GoogleLogin className="w-full"
+          onSuccess={() => {
+          console.log("SUCCESFULLY LOGGED IN !")
+          navigate("/dashboard")
+          }}
+        onError={() => console.log("Error logging in")}
+        auto_select={true}
+      />
 
+      <p className='text-[13px] text-slate-800 mt-3' >
+        Don't have an account? {" "}
+        <Link to={"/register"}className={` onhover:underline font-medium ${isDark? 'text-white' :'text-black'}`}>
+           <u>Create a new account</u>
+       </Link>
+        </p>
+     <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
     </div>
     </AuthLayout>
   )

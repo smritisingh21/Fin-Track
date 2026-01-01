@@ -5,10 +5,12 @@ import moment from 'moment'
 import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
 import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
+import { useNavigate } from 'react-router'
 
 const RecentIncome = ({transactions , onseeMore}) => {
 
   const {isDark} = useContext(ThemeContext);
+  const navigate = useNavigate();
   const hasTransactions = transactions && transactions.length > 0;
 
   
@@ -34,7 +36,7 @@ const RecentIncome = ({transactions , onseeMore}) => {
                     type= "income"
                     hideDeleteBtn
                 />))):(
-                  <EmptyLayout type='income'/>
+                  <EmptyLayout type='income' clickEvent={() =>navigate("/income")} />
                 )
           }
         </div>

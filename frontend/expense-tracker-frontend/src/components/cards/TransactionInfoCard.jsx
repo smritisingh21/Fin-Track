@@ -10,9 +10,10 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
     const {isDark} = useContext(ThemeContext)
 
     const getAmountStyles = () => {
-    return type === "income" ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500"} 
-
-    
+        return type === "income" ? 
+        "bg-green-50 text-green-500" 
+        : "bg-red-50 text-red-500"
+    }
 
   return (
     <div className={`group relative flex items-center gap-2 hover:transition-transform mt-4 p-3 rounded-lg ${isDark? 'hover:bg-gray-800/50' : 'hover:bg-gray-100/50'}`}>
@@ -41,8 +42,8 @@ const TransactionInfoCard = ({title ,icon,date,amount,type,hideDeleteBtn,onDelet
                 )}
 
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-md ${getAmountStyles()} `}>
-                    <h5 className='text-xs font-large'>
-                        {type === 'income'? '+' :'-' } Rs. {amount}/-
+                    <h5 className='text-sm font-large'>
+                        {type === 'income'? '+' :'-' } Rs. {amount}
                     </h5>
 
                 </div>

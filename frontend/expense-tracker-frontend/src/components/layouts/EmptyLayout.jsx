@@ -2,13 +2,15 @@ import React from 'react'
 import { FaMoneyBillWave } from 'react-icons/fa';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
-export const EmptyLayout = ({type}) => {
+export const EmptyLayout = ({type , clickEvent}) => {
 
         const {isDark} = useContext(ThemeContext);
   
   return (
-    <div className={`flex flex-col min-h-100% items-center justify-center py-10 px-4 border-2 border-dashed rounded-3xl ${
-      isDark ? 'border-zinc-800 bg-zinc-900/50' : 'border-gray-100 bg-gray-50/50'
+    <div 
+    onClick={clickEvent}
+    className={`flex flex-col min-h-100% items-center justify-center cursor-pointer py-10 px-4 border-2 border-dashed rounded-3xl ${
+      isDark ? 'border-zinc-800 bg-zinc-900/50' : 'border-gray-100 bg-gray-50/50 c'
     }`}>
       <div className={`p-4 rounded-full mb-4 ${isDark ? 'bg-zinc-800 text-zinc-500' : 'bg-gray-100 text-gray-400'}`}>
         <FaMoneyBillWave size={32} />

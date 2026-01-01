@@ -5,12 +5,13 @@ import { useContext } from 'react'
 import { LuArrowRight } from 'react-icons/lu'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
 import { EmptyLayout } from '../layouts/EmptyLayout.jsx'
-
+import { useNavigate } from 'react-router'
 
 
 export const ExpenseTransactions = ({transactions, onseeMore}) => {
 
       const {isDark} = useContext(ThemeContext);
+      const navigate = useNavigate();
        const hasTransactions = transactions && transactions.length > 0;
 
   
@@ -42,7 +43,7 @@ export const ExpenseTransactions = ({transactions, onseeMore}) => {
                     type= "expense"
                     hideDeleteBtn
                 />))):(
-                  <EmptyLayout type="expense"/>
+                  <EmptyLayout type="expense" clickEvent={() => navigate("/expenses")}/>
                 )
 
           }
