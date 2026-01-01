@@ -6,10 +6,8 @@ import CharAvatar from '../cards/CharAvatar.jsx'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
 import { CameraIcon } from '@heroicons/react/16/solid'
 import { LuLoaderCircle } from 'react-icons/lu'
-import { LuLogOut } from 'react-icons/lu'
-
-
-
+import uploadImage from '../../utils/uploadImage.js'
+import toast from 'react-hot-toast'
 
 const SideMenu = ({activeMenu}) => {
 
@@ -28,8 +26,20 @@ const SideMenu = ({activeMenu}) => {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setIsUploading(true);
+    try{
+      setIsUploading(true);
 
+      const data = await uploadImage(file);
+      if (data && data.user) {
+            toast.success("Profile updated!");
+        }
+      window.location.reload();
+      
+    }catch(err){
+      console.log(err);
+    }
+      setLoading(false);
+    
   }
 
 
@@ -62,7 +72,6 @@ const SideMenu = ({activeMenu}) => {
 
             <div className={`absolute inset-0 flex items-center justify-center
              bg-black/40 transition-opacity duration-200 ${
-
               isUploading ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
             }`}>
 

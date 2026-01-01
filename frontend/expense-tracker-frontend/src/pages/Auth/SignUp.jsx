@@ -10,7 +10,6 @@ import axiosInstance from '../../utils/axiosInstance';
 import uploadImage  from '../../utils/uploadImage';
 import { ThemeContext } from '../../context/ThemeContext';
 import { FaHeart } from 'react-icons/fa';
-import {GoogleLogin , googleLogout} from '@react-oauth/google'
 
 
 export default function Signup() {
@@ -129,14 +128,7 @@ return (
             
           </div>
 
-           <GoogleLogin 
-          onSuccess={() => navigate('/dashboard')}
-          onError={() => console.log("Error logging in")}
-          
-          auto_select={true}
-
-        
-        />
+     
 
            <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
 

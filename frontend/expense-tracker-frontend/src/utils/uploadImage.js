@@ -16,10 +16,12 @@ const uploadImage = async(imageFile) =>{
             },
         })
         return response.data;
+
     }catch(err){
-        console.error("Error uploading the image" , error);
-        throw error;
+        console.error("Error uploading the image" , err);
+        throw err;
     }
+
 }
 
 export default uploadImage;
