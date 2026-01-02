@@ -36,6 +36,8 @@ axiosInstance.interceptors.response.use(
          } else if (error.code === "ECONNABORTED") {
          console.log("Request timed out. Please try again later");
        }
+    return Promise.reject(error);
+
     } else {
     console.log("Network error or no response from server");
     }}
