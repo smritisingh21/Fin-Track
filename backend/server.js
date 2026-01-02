@@ -14,7 +14,8 @@ const app = express();
 const allowedOrigins = [
     "http://localhost:5173",
   "https://fin-track.vercel.app",
-  "https://fin-track-ivory.vercel.app"
+  "https://fin-track-ivory.vercel.app",
+"https://fin-track-git-main-smritisingh21s-projects.vercel.app/"
 ]
 
 app.use( //global middleware
@@ -26,7 +27,7 @@ app.use( //global middleware
 
     }
 ))
-app.use(express.urlencoded())
+app.use(express.urlencoded({extended:true}))
 app.use(express.json());
 connectDB();
 
