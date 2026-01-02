@@ -7,7 +7,7 @@ const { uploadProfileImage  } = require("../controllers/authController");
 
 const router = express.Router();
 
-router.post("/register",upload.single("image"), registerUser);
+router.post("/register", upload.single("image"), registerUser);
 router.post("/login", loginUser);
 router.get("/getUser", protect ,getUserInfo);
 router.post("/google", googleAuth);

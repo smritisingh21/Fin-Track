@@ -18,7 +18,8 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     if (!name || !email || !password) {
         return res.status(400).json({ message: "Please fill all fields" });
     }
-    
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
     try{
         const userExists = await User.findOne({ email });
         if (userExists) {
@@ -145,7 +146,7 @@ exports.googleAuth = async (req, res) => {
     });
 
     const payload = ticket.getPayload();
-    
+
     const { email, name, picture, sub } = payload;
 
     let user = await User.findOne({ email });
