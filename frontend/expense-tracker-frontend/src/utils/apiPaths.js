@@ -1,5 +1,4 @@
 
-export const BASE_URL = "https://fintrack-g813.onrender.com";
 
 export const API_PATHS ={
     AUTH: {
