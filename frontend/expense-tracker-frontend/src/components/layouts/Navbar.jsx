@@ -14,7 +14,7 @@ const Navbar = ({activeMenu}) => {
   return (
     <div className={`flex justify-between gap-5 border backdrop-blur-xs border-b border-gray-400/30  py-4 px-7 sticky top-0 z-30 bg-transparent`}>
 
-        <button className='block lg:hidden text-black ' 
+        <button className={`block lg:hidden md:hidden text-black ${isDark ? 'text-white' : 'text-black'}`}
             onClick={() => setOpenSideMenu(!openSideMenu)}>
             {openSideMenu ? 
             (<HiOutlineX className = "text-2xl"/>) 
