@@ -1,45 +1,33 @@
-import axios from 'axios';
-import { BASE_URL } from './apiPaths';
+import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL :import.meta.env.VITE_API_BASE_URL,
-    timeout : 10000,
-   
-})
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  timeout: 10000,
+});
 
-//request interceptor
 axiosInstance.interceptors.request.use(
-    
-    (config) =>{
-        const accessToken = localStorage.getItem("token");
-        if(accessToken){
-            config.headers.Authorization =`Bearer ${accessToken}`
-        }
-        return config;
-    },(error) =>{
-        return Promise.reject(error);
+  (config) => {
+    const accessToken = localStorage.getItem("token");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
-)
-
-//response intercenptor
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 axiosInstance.interceptors.response.use(
-    (response) =>{
-        return response;
-    },
-    (error)=>{
-    if (error.response) {
-         if (error.response.status === 401) {
-         window.location.href = '/login';
-         } else if (error.response.status === 500) {
-            console.log("Server error. Please try again later");
-         } else if (error.code === "ECONNABORTED") {
-         console.log("Request timed out. Please try again later");
-       }
+  (response) => response,
+  (error) => {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      window.location.pathname !== "/login"
+    ) {
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
+  }
+);
 
-    } else {
-    console.log("Network error or no response from server");
-    }}
-)
 export default axiosInstance;
