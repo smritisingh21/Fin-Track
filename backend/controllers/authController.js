@@ -1,10 +1,13 @@
 
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const {OAuth2Client} = require('google-auth-library')
 
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
  const generateToken = (id) => {
-     return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: "12h",});
+     return jwt.sign({ id}, process.env.JWT_SECRET, {expiresIn: "12h",});
  }
 
  //register user 
@@ -54,6 +57,8 @@ const jwt = require("jsonwebtoken");
  exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
+
+
     //validation : check all fields are filled
     if (!email || !password) {
         return res.status(400).json({ message: "Please fill all fields" });
@@ -69,6 +74,12 @@ const jwt = require("jsonwebtoken");
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
+
+       if (user.authProvider === "google") {
+            return res.status(400).json({
+            message: "Please login using Google",
+        });
+}
 
         res.status(200).json({
             user,
@@ -119,6 +130,51 @@ exports.uploadProfileImage = async (req, res) => {
         res.status(500).json({ message: "Server error during upload", error: error.message });
     }
 };
+
+exports.googleAuth = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ message: "Token missing" });
+    }
+
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    
+    const { email, name, picture, sub } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        googleId: sub,
+        profileImageUrl: picture,
+        authProvider: "google",
+      });
+    }
+
+    const tokenJwt = generateToken(user._id);
+
+    res.status(200).json({
+      user,
+      token: tokenJwt,
+    });
+
+  } catch (error) {
+    res.status(401).json({
+      message: "Google auth failed",
+      error: error.message,
+    });
+  }
+};
+
 
 
 

@@ -14,6 +14,7 @@ const app = express();
 const allowedOrigins = [
     'http://localhost:5173', // Your React/Vite development server
     'http://localhost:8000', 
+    "https://fin-track.vercel.app"
 ]
 
 app.use( //global middleware

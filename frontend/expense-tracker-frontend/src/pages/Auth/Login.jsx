@@ -13,14 +13,25 @@ import { jwtDecode } from "jwt-decode";
 
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [error,setError] = useState(null);
 
   const {isDark, toggleDark} =useContext(ThemeContext);
+  const {updateUser, user} = useContext(UserContext);
 
-  const {updateUser, clearUser} = useContext(UserContext);
-  const navigate = useNavigate();
+
+  const handleSuccess = async (credentialResponse) => {
+    const res = await axiosInstance.post(`${API_PATHS.AUTH.GOOGLE_LOGIN}`,
+      { token: credentialResponse.credential }
+    );
+    console.log(res.data.token);
+    localStorage.setItem("token", res.data.token);
+    updateUser(user);            
+    navigate("/dashboard");
+  };
 
   function handleLogout () {
     googleLogout()
@@ -102,14 +113,11 @@ export default function Login() {
            
    </form>
 
-      <GoogleLogin className="w-full"
-          onSuccess={() => {
-          console.log("SUCCESFULLY LOGGED IN !")
-          navigate("/dashboard")
-          }}
-        onError={() => console.log("Error logging in")}
-        auto_select={true}
-      />
+
+    <GoogleLogin
+      onSuccess={handleSuccess}
+      onError={() => console.log("Login Failed")}
+    />
 
       <p className='text-[13px] text-slate-800 mt-3' >
         Don't have an account? {" "}

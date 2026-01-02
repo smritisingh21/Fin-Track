@@ -39,14 +39,12 @@ export default function Signup() {
         return;
     }
 
-    // 2. Create FormData instead of a plain JSON object
     const formData = new FormData();
     
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
     
-    // 3. Append the profile picture file if present
     if (profilePicture) {
         formData.append("image", profilePicture); // 'image' must match upload.single("image")
     }
@@ -61,13 +59,9 @@ export default function Signup() {
             updateUser(user);
             navigate("/dashboard");
         }
-    } catch (err) {
-        if (err.response && err.response.data.message) {
+        } catch (err) {
             setError(err.response.data.message);
-        } else {
-            setError("Something went wrong. Please try again.");
         }
-    }
 };
 
 return (
@@ -127,7 +121,6 @@ return (
             </p>            
             
           </div>
-
      
 
            <p className='text-xs text-gray-600 mt-10 flex gap-2 justify-center'>Made with <FaHeart size={15} color='red'/> by Smriti Singh</p>
