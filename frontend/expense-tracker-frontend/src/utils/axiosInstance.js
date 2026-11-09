@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000" ,
-  timeout: 10000,
+  timeout: 45000,
 });
 
 axiosInstance.interceptors.request.use(
@@ -10,6 +10,10 @@ axiosInstance.interceptors.request.use(
     const accessToken = localStorage.getItem("token");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    const customGeminiKey = localStorage.getItem("gemini_api_key");
+    if (customGeminiKey && customGeminiKey.trim()) {
+      config.headers["x-gemini-api-key"] = customGeminiKey.trim();
     }
     return config;
   },

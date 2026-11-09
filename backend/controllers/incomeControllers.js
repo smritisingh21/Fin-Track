@@ -1,6 +1,7 @@
 
 const xlsx = require('xlsx');
 const Income = require('../models/income');
+const { syncMonthlySummaryForDate } = require('./analyticsController');
 
 //Add income
 exports.addIncome = async( req, res) => {
@@ -16,6 +17,7 @@ exports.addIncome = async( req, res) => {
     })
 
     await newIncome.save();
+    await syncMonthlySummaryForDate(userId, newIncome.date);
     res.status(200).json(newIncome);
 }catch(err){
     res.status(500).json({message : err.message})
@@ -51,6 +53,7 @@ exports.deleteIncome = async( req, res) => {
              return res.status(404).json({ message: "Income record not found or unauthorized." });
         }
 
+        await syncMonthlySummaryForDate(userId, deletedIncome.date);
         res.json({message : "Deletion successful"});
     }catch(err){
      res.status(500).json({message : err.message})

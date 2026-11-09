@@ -26,6 +26,12 @@ export const API_PATHS ={
     IMAGE:{
         UPLOAD_IMAGE:`/api/v1/auth/upload-image`,
     },
+    ANALYTICS: {
+        GET_PERIOD: "/api/v1/analytics/period",
+        GET_MONTHLY_HISTORY: "/api/v1/analytics/monthly-history",
+        GENERATE_AI_SUMMARY: "/api/v1/analytics/ai-summary",
+        ASK_AI_CHAT: "/api/v1/analytics/ai-chat",
+    },
 }
 
 export default API_PATHS;

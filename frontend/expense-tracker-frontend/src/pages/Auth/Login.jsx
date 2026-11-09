@@ -14,8 +14,8 @@ import {GoogleLogin , googleLogout} from '@react-oauth/google'
 export default function Login() {
   const navigate = useNavigate();
 
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const [email,setEmail] = useState("sampleuser@gmail.com");
+  const [password,setPassword] = useState("sample123");
   const [error,setError] = useState(null);
 
   const {isDark, toggleDark} =useContext(ThemeContext);

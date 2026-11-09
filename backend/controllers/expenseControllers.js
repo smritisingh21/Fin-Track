@@ -1,23 +1,26 @@
 
 const xlsx = require('xlsx');
 const Expense = require('../models/expenses')
+const { syncMonthlySummaryForDate } = require('./analyticsController');
 //Add expense
 exports.addExpense = async( req, res) => {
     const userId = req.user.id;
   try{
-     const {category, amount, date} = req.body;
+     const {icon, category, amount, date} = req.body;
     if(!category || !amount || !date){
         return res.status(400).json({message : "All fields are required"})
     }
 
     const newExpense= new Expense({
         userId ,
+        icon,
         category ,
         amount:Number(amount) ,
         date:new Date(date)
     })
 
     await newExpense.save();
+    await syncMonthlySummaryForDate(userId, newExpense.date);
     res.status(200).json(newExpense);
 
 }catch(err){
@@ -47,6 +50,9 @@ exports.deleteExpense = async ( req, res) => {
             _id: expenseId, 
             userId: userId 
         });
+        if (deletedExpense) {
+            await syncMonthlySummaryForDate(userId, deletedExpense.date);
+        }
        
         res.json("Deletion successful");
     }catch(err){

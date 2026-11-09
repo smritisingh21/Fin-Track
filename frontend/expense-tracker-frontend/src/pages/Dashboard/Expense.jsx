@@ -1,4 +1,6 @@
-import React, { useContext, useEffect,useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { LuSparkles } from 'react-icons/lu';
 import useUserAuth from '../../hooks/useUserAuth';
 import { ExpenseOverview } from '../../components/expense/ExpenseOverview';
 import Modal from '../../components/layouts/Modal';
@@ -11,17 +13,61 @@ import API_PATHS from '../../utils/apiPaths';
 import toast from 'react-hot-toast';
 import { RiLoader2Fill } from 'react-icons/ri';
 import ThemeContext from '../../context/ThemeContext';
+import { addThousandsSeparator } from '../../utils/helper';
 
+function getIsoWeekString(dateInput = new Date()) {
+  const date = new Date(dateInput);
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+}
 
 export default function Expense() {
   
   useUserAuth();
+  const navigate = useNavigate();
   const {isDark } = useContext(ThemeContext);
 
   const [expenseData , setExpenseData] = useState([]);
   const [loading , setLoading] = useState(false);
   const [openDeleteAlert , setOpenDeleteAlert] = useState({show :false, data: null});
   const [openAddExpenseModal , setOpenAddExpenseModal] = useState(false);
+
+  // Period filtering state: "all" | "month" | "week" | "year"
+  const [filterMode, setFilterMode] = useState("all");
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  });
+  const [selectedWeek, setSelectedWeek] = useState(() => getIsoWeekString(new Date()));
+  const [selectedYear, setSelectedYear] = useState(() => String(new Date().getFullYear()));
+
+  const filteredExpenses = useMemo(() => {
+    if (filterMode === "all") return expenseData;
+    return expenseData.filter((item) => {
+      const d = new Date(item.date);
+      if (isNaN(d.getTime())) return false;
+      if (filterMode === "year") {
+        return String(d.getFullYear()) === selectedYear;
+      }
+      if (filterMode === "month") {
+        const mKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+        return mKey === selectedMonth;
+      }
+      if (filterMode === "week") {
+        return getIsoWeekString(d) === selectedWeek;
+      }
+      return true;
+    });
+  }, [expenseData, filterMode, selectedMonth, selectedWeek, selectedYear]);
+
+  const filteredTotal = useMemo(
+    () => filteredExpenses.reduce((sum, item) => sum + (Number(item.amount) || 0), 0),
+    [filteredExpenses]
+  );
 
   //get income details
   const fetchExpenseDetails = async() =>{
@@ -132,14 +178,106 @@ export default function Expense() {
          : 
           (
          <div className='grid grid-cols-1 gap-6'>
+          {/* Period Filter & AI Insights Bar */}
+          <div className={`${isDark ? 'card-dark' : 'card'} flex flex-col md:flex-row md:items-center md:justify-between gap-4`}>
+            <div className='flex flex-wrap items-center gap-2'>
+              {[
+                { id: 'all', label: 'All Time' },
+                { id: 'month', label: 'Month' },
+                { id: 'week', label: 'Week' },
+                { id: 'year', label: 'Year' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setFilterMode(tab.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition ${
+                    filterMode === tab.id
+                      ? 'bg-purple-600 text-white'
+                      : isDark
+                      ? 'bg-gray-900 text-gray-300 border border-gray-800'
+                      : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+
+              {filterMode === 'month' && (
+                <input
+                  type='month'
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className={`px-3 py-1.5 rounded-lg border text-xs ${
+                    isDark ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-gray-300 text-gray-800'
+                  }`}
+                />
+              )}
+
+              {filterMode === 'week' && (
+                <input
+                  type='week'
+                  value={selectedWeek}
+                  onChange={(e) => setSelectedWeek(e.target.value)}
+                  className={`px-3 py-1.5 rounded-lg border text-xs ${
+                    isDark ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-gray-300 text-gray-800'
+                  }`}
+                />
+              )}
+
+              {filterMode === 'year' && (
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(e.target.value)}
+                  className={`px-3 py-1.5 rounded-lg border text-xs ${
+                    isDark ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-gray-300 text-gray-800'
+                  }`}
+                >
+                  {Array.from({ length: 7 }, (_, i) => {
+                    const y = new Date().getFullYear() - 4 + i;
+                    return (
+                      <option key={y} value={String(y)}>
+                        {y}
+                      </option>
+                    );
+                  })}
+                </select>
+              )}
+            </div>
+
+            <div className='flex items-center justify-between md:justify-end gap-4'>
+              <div className='text-xs'>
+                <span className='text-gray-400'>Filtered Total ({filteredExpenses.length}): </span>
+                <span className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  ₹{addThousandsSeparator(filteredTotal)}
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  const pType = filterMode === 'all' ? 'month' : filterMode;
+                  const pKey =
+                    pType === 'year'
+                      ? selectedYear
+                      : pType === 'week'
+                      ? selectedWeek
+                      : selectedMonth;
+                  navigate(`/insights?periodType=${pType}&periodKey=${pKey}`);
+                }}
+                className='flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold cursor-pointer'
+              >
+                <LuSparkles size={14} />
+                <span>AI Summary & Insights</span>
+              </button>
+            </div>
+          </div>
+
           <div>
             <ExpenseOverview 
-            transactions ={expenseData}
+            transactions ={filteredExpenses}
             onAddExpense={() => setOpenAddExpenseModal(true)}
             />
           </div>
          
-         <ExpenseList transactions={expenseData}
+         <ExpenseList transactions={filteredExpenses}
             onDelete={(id) =>{setOpenDeleteAlert({show : true , data : id}) }}
             onDownload={DownloadExpenseDetails}
           />

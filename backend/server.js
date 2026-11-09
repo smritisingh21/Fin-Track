@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const incomeRoutes= require("./routes/incomeRoutes");
 const expenseRoutes= require("./routes/expenseRoutes");
 const dashboardRoutes= require("./routes/dashboardRoutes");
+const analyticsRoutes = require("./routes/analyticsRoutes");
 
 const app = express();
 
@@ -38,7 +39,7 @@ app.use(cors({
         }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-gemini-api-key"],
     credentials: true 
 }));
 app.use(express.urlencoded({extended:true}))
@@ -49,6 +50,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/income", incomeRoutes);
 app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/analytics", analyticsRoutes);
 app.use('/uploads' , express.static(path.join(process.cwd() ,"uploads")))
 
 

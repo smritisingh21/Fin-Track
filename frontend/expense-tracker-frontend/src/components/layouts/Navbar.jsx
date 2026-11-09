@@ -32,13 +32,14 @@ const Navbar = ({activeMenu}) => {
 
      <div className='flex justify-center items-center gap-2'>
 
-         <button className={`cursor-pointer rounded-full ${isDark ? 'darkmode-btn' : 'lightmode-btn'}`}
+         <button className={`px-3 flex justify-center items-center gap-2 cursor-pointer rounded-full ${isDark ? 'darkmode-btn' : 'lightmode-btn'}`}
          onClick={toggleDark}>
-          {isDark ?  <IoIosSunny size={20} /> : <MdDarkMode size={20}/> }
+          {isDark ?  <IoIosSunny size={20} />  : <MdDarkMode size={20}/> }
+          {isDark ? 'Light' :'Dark'}
         </button>
 
         <Link to={'https://github.com/smritisingh21/Fin-Track'} target="_blank" className={`cursor-pointer rounded-full ${isDark ? 'darkmode-btn' : 'lightmode-btn'}`}>
-        <FaGithub size ={20} />
+        <FaGithub size ={20} /> Repo
       </Link>
      </div>
         

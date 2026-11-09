@@ -4,6 +4,7 @@ import Login from "./pages/Auth/Login"
 import SignUp from "./pages/Auth/SignUp"
 import Income from  "./pages/Dashboard/Income.jsx"
 import Expense from  "./pages/Dashboard/Expense.jsx"
+import Insights from "./pages/Dashboard/Insights.jsx"
 import {Toaster} from 'react-hot-toast'
 import Logout from "./pages/Auth/Logout.jsx"
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/register"  element={<SignUp />} />
           <Route path="/income"  element={<Income />} />
           <Route path="/expenses"  element={<Expense />} />
+          <Route path="/insights"  element={<Insights />} />
           <Route path="/Logout"  element={<Logout />} />
 
         </Routes>
