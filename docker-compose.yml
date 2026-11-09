@@ -81,3 +81,4 @@ volumes:
 networks:
   fintrack-net:
     driver: bridge
+

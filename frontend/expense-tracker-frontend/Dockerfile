@@ -37,3 +37,4 @@ EXPOSE 80
 
 # Run Nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
+
