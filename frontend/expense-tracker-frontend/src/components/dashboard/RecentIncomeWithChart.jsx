@@ -7,7 +7,7 @@ import { FaRupeeSign } from 'react-icons/fa'
 const COLORS =["#075CF5" ,"#FA2C37","#FF6900"]
 
 
-const RecentIncomeWithChart = ({data,totalIncome}) => {
+const RecentIncomeWithChart = ({data,totalIncome, title}) => {
 
     const {isDark} = useContext(ThemeContext);
     const CHART_COLORS = useMemo(() => {
@@ -29,7 +29,7 @@ const RecentIncomeWithChart = ({data,totalIncome}) => {
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div className={`text-lg ${isDark? 'text-amber-50': 'text-black'}`}>
-            <h5>Last 60 days Income</h5>
+            <h5>{title || "Last 60 days Income"}</h5>
         </div>
 
         <CustomPieChart

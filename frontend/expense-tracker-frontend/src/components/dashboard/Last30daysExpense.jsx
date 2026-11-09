@@ -5,20 +5,20 @@ import { useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext.jsx'
 import SimpleEmpty from '../layouts/SimpleEmpty.jsx'
 
-export const Last30daysExpense = ({transactions}) => {
+export const Last30daysExpense = ({transactions, title}) => {
 
     const {isDark} = useContext(ThemeContext);
-    const hasTransactions = transactions.length > 0;
+    const hasTransactions = transactions && transactions.length > 0;
   
     
     const chartData = useMemo(() => {
-        return prepareExpenseBarChartData(transactions);
+        return prepareExpenseBarChartData(transactions || []);
     }, [transactions]); 
 
   return (
     <div className={`${isDark? 'card-dark': 'card'}`}>
         <div  className='flex items-center justify-between'>
-            <h5 className={` text-lg mb-20 ${isDark? 'text-white':'text-gray-900'}`}>Last 30 days expenses</h5>
+            <h5 className={` text-lg mb-20 ${isDark? 'text-white':'text-gray-900'}`}>{title || "Last 30 days expenses"}</h5>
         </div>
       {
         hasTransactions?(
