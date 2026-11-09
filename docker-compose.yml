@@ -1,0 +1,83 @@
+services:
+  # ========================================================
+  # MongoDB Database Service (Local Containerized DB)
+  # ========================================================
+  mongodb:
+    image: mongo:7.0
+    container_name: fintrack-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=expense-tracker
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - fintrack-net
+
+  # ========================================================
+  # Express Backend API Service
+  # ========================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fintrack-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - MONGO_URI=${MONGO_URI:-mongodb://mongodb:27017/expense-tracker}
+      - JWT_SECRET=${JWT_SECRET:-default_jwt_secret_fintrack_2026}
+      - CLIENT_ID=${CLIENT_ID:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - NODE_ENV=production
+    volumes:
+      - backend-uploads:/app/uploads
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - fintrack-net
+
+  # ========================================================
+  # Vite React Frontend Service (Served via Nginx)
+  # ========================================================
+  frontend:
+    build:
+      context: ./frontend/expense-tracker-frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL:-}
+    container_name: fintrack-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - fintrack-net
+
+# ========================================================
+# Named Persistent Storage Volumes
+# ========================================================
+volumes:
+  mongo-data:
+    driver: local
+  backend-uploads:
+    driver: local
+
+# ========================================================
+# Custom Bridge Network for Inter-container Communication
+# ========================================================
+networks:
+  fintrack-net:
+    driver: bridge
