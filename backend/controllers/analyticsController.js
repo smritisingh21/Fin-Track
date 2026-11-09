@@ -72,9 +72,63 @@ function formatShortDate(d) {
 
 function resolvePeriodRange(periodType = "month", rawPeriodKey = "") {
   const now = new Date();
-  const normalizedType = ["week", "month", "year"].includes(periodType)
+  const normalizedType = ["date", "week", "month", "year"].includes(periodType)
     ? periodType
     : "month";
+
+  if (normalizedType === "date") {
+    let y = now.getFullYear();
+    let m = now.getMonth();
+    let d = now.getDate();
+    const match = String(rawPeriodKey)
+      .trim()
+      .match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (match) {
+      y = Number(match[1]);
+      m = Math.max(0, Math.min(11, Number(match[2]) - 1));
+      d = Math.max(1, Math.min(31, Number(match[3])));
+    }
+    const startDate = new Date(y, m, d, 0, 0, 0, 0);
+    const endDate = new Date(y, m, d, 23, 59, 59, 999);
+
+    const prevDate = new Date(y, m, d - 1);
+    const prevStartDate = new Date(
+      prevDate.getFullYear(),
+      prevDate.getMonth(),
+      prevDate.getDate(),
+      0,
+      0,
+      0,
+      0
+    );
+    const prevEndDate = new Date(
+      prevDate.getFullYear(),
+      prevDate.getMonth(),
+      prevDate.getDate(),
+      23,
+      59,
+      59,
+      999
+    );
+
+    const periodKey = `${y}-${String(m + 1).padStart(2, "0")}-${String(
+      d
+    ).padStart(2, "0")}`;
+    const prevPeriodKey = `${prevDate.getFullYear()}-${String(
+      prevDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(prevDate.getDate()).padStart(2, "0")}`;
+
+    return {
+      periodType: "date",
+      periodKey,
+      label: `${d} ${SHORT_MONTH_NAMES[m]} ${y}`,
+      startDate,
+      endDate,
+      prevPeriodKey,
+      prevStartDate,
+      prevEndDate,
+    };
+  }
 
   if (normalizedType === "year") {
     const year =
@@ -241,6 +295,39 @@ function computeBreakdowns(incomes = [], expenses = []) {
 
 function buildTimeSeries(periodInfo, incomes = [], expenses = []) {
   const { periodType, startDate, endDate } = periodInfo;
+
+  if (periodType === "date") {
+    const intervals = [
+      { label: "12 AM", startHour: 0, endHour: 4 },
+      { label: "4 AM", startHour: 4, endHour: 8 },
+      { label: "8 AM", startHour: 8, endHour: 12 },
+      { label: "12 PM", startHour: 12, endHour: 16 },
+      { label: "4 PM", startHour: 16, endHour: 20 },
+      { label: "8 PM", startHour: 20, endHour: 24 },
+    ];
+    const buckets = intervals.map((intv) => ({
+      label: intv.label,
+      fullLabel: intv.label,
+      income: 0,
+      expense: 0,
+      net: 0,
+    }));
+
+    for (const inc of incomes) {
+      const h = new Date(inc.date).getHours();
+      const idx = Math.min(5, Math.floor(h / 4));
+      buckets[idx].income += Number(inc.amount) || 0;
+    }
+    for (const exp of expenses) {
+      const h = new Date(exp.date).getHours();
+      const idx = Math.min(5, Math.floor(h / 4));
+      buckets[idx].expense += Number(exp.amount) || 0;
+    }
+    for (const b of buckets) {
+      b.net = b.income - b.expense;
+    }
+    return buckets;
+  }
 
   if (periodType === "year") {
     const year = startDate.getFullYear();
@@ -880,4 +967,7 @@ exports.askAiAssistant = async (req, res) => {
     });
   }
 };
+
+exports.resolvePeriodRange = resolvePeriodRange;
+exports.getISOWeekInfo = getISOWeekInfo;
 

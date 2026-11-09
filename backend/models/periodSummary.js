@@ -9,7 +9,7 @@ const PeriodSummarySchema = new mongoose.Schema(
     },
     periodType: {
       type: String,
-      enum: ["week", "month", "year"],
+      enum: ["date", "week", "month", "year"],
       required: true,
     },
     periodKey: {

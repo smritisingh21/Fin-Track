@@ -40,6 +40,13 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { addThousandsSeparator } from "../../utils/helper";
 
+function getCurrentDateKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+    now.getDate()
+  ).padStart(2, "0")}`;
+}
+
 function getCurrentMonthKey() {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -62,6 +69,13 @@ function getCurrentWeekKey(dateInput = new Date()) {
 }
 
 function shiftPeriodKey(periodType, periodKey, delta) {
+  if (periodType === "date") {
+    const parts = (periodKey || getCurrentDateKey()).split("-").map(Number);
+    const d = new Date(parts[0], parts[1] - 1, parts[2] + delta);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+      d.getDate()
+    ).padStart(2, "0")}`;
+  }
   if (periodType === "year") {
     const y = Number(periodKey) || new Date().getFullYear();
     return String(y + delta);
@@ -141,6 +155,7 @@ export default function Insights() {
   const handlePeriodTypeChange = (newType) => {
     setPeriodType(newType);
     let defaultKey = getCurrentMonthKey();
+    if (newType === "date") defaultKey = getCurrentDateKey();
     if (newType === "year") defaultKey = getCurrentYearKey();
     if (newType === "week") defaultKey = getCurrentWeekKey();
     setPeriodKey(defaultKey);
@@ -355,7 +370,7 @@ export default function Insights() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Week / Month / Year Switcher */}
+            {/* Date / Week / Month / Year Switcher */}
             <div
               className={`inline-flex rounded-xl p-1 border ${
                 isDark
@@ -364,6 +379,7 @@ export default function Insights() {
               }`}
             >
               {[
+                { id: "date", label: "Date" },
                 { id: "week", label: "Week" },
                 { id: "month", label: "Month" },
                 { id: "year", label: "Year" },
@@ -401,6 +417,19 @@ export default function Insights() {
               >
                 <LuChevronLeft size={16} />
               </button>
+
+              {periodType === "date" && (
+                <input
+                  type="date"
+                  value={periodKey}
+                  onChange={(e) => handlePeriodKeyChange(e.target.value)}
+                  className={`px-3 py-1.5 rounded-lg border text-xs font-medium outline-none ${
+                    isDark
+                      ? "bg-gray-900 border-gray-700 text-white"
+                      : "bg-white border-gray-300 text-gray-800"
+                  }`}
+                />
+              )}
 
               {periodType === "month" && (
                 <input
