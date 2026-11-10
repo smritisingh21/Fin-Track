@@ -39,7 +39,7 @@ app.use(cors({
         }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization", "x-gemini-api-key"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true 
 }));
 app.use(express.urlencoded({extended:true}))

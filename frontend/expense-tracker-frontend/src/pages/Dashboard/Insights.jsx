@@ -15,7 +15,6 @@ import {
   LuCalendar,
   LuChevronLeft,
   LuChevronRight,
-  LuKeyRound,
   LuRefreshCw,
   LuTrendingUp,
   LuTrendingDown,
@@ -32,7 +31,6 @@ import { RiLoader2Fill } from "react-icons/ri";
 import toast from "react-hot-toast";
 
 import DashboardLayout from "../../components/layouts/DashboardLayout";
-import Modal from "../../components/layouts/Modal";
 import { CustomPieChart } from "../../components/charts/CustomPieChart";
 import ThemeContext from "../../context/ThemeContext";
 import useUserAuth from "../../hooks/useUserAuth";
@@ -143,15 +141,6 @@ export default function Insights() {
   const [askingChat, setAskingChat] = useState(false);
   const [lastInteractionId, setLastInteractionId] = useState(null);
 
-  // API Key Modal state
-  const [openKeyModal, setOpenKeyModal] = useState(false);
-  const [apiKeyInput, setApiKeyInput] = useState(
-    () => localStorage.getItem("gemini_api_key") || ""
-  );
-  const [hasCustomKey, setHasCustomKey] = useState(() =>
-    Boolean(localStorage.getItem("gemini_api_key"))
-  );
-
   const handlePeriodTypeChange = (newType) => {
     setPeriodType(newType);
     let defaultKey = getCurrentMonthKey();
@@ -209,6 +198,7 @@ export default function Insights() {
   }, [periodType, periodKey]);
 
   useEffect(() => {
+    localStorage.removeItem("gemini_api_key");
     fetchMonthlyHistory();
   }, []);
 
@@ -233,19 +223,14 @@ export default function Insights() {
             : prev
         );
         setLastInteractionId(response.data.aiSummary.interactionId || null);
-        toast.success("Gemini AI summary generated & saved!");
+        toast.success("AI financial summary generated & saved!");
         fetchMonthlyHistory();
       }
     } catch (err) {
-      if (err.response?.data?.missingApiKey) {
-        setOpenKeyModal(true);
-        toast.error("Please configure your Gemini API key to generate insights.");
-      } else {
-        toast.error(
-          err.response?.data?.message ||
-            "Failed to generate Gemini AI summary."
-        );
-      }
+      toast.error(
+        err.response?.data?.message ||
+          "Failed to generate AI financial summary. Please try again."
+      );
     } finally {
       setGeneratingAi(false);
     }
@@ -282,32 +267,13 @@ export default function Insights() {
         }
       }
     } catch (err) {
-      if (err.response?.data?.missingApiKey) {
-        setOpenKeyModal(true);
-        toast.error("Please configure your Gemini API key first.");
-      } else {
-        toast.error(
-          err.response?.data?.message || "Failed to get answer from Gemini AI."
-        );
-      }
+      toast.error(
+        err.response?.data?.message ||
+          "Failed to get answer from AI Assistant. Please try again."
+      );
     } finally {
       setAskingChat(false);
     }
-  };
-
-  const handleSaveApiKey = (e) => {
-    e.preventDefault();
-    const trimmed = apiKeyInput.trim();
-    if (trimmed) {
-      localStorage.setItem("gemini_api_key", trimmed);
-      setHasCustomKey(true);
-      toast.success("Gemini API Key saved to browser storage.");
-    } else {
-      localStorage.removeItem("gemini_api_key");
-      setHasCustomKey(false);
-      toast.success("Removed custom API key (using backend .env key if set).");
-    }
-    setOpenKeyModal(false);
   };
 
   const pieChartData = useMemo(() => {
@@ -494,29 +460,6 @@ export default function Insights() {
                 <LuChevronRight size={16} />
               </button>
             </div>
-
-            {/* Gemini API Key Settings Button */}
-            <button
-              onClick={() => setOpenKeyModal(true)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-medium cursor-pointer transition ${
-                isDark
-                  ? "bg-gray-900 border-gray-700 text-gray-200 hover:bg-gray-800"
-                  : "bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              <LuKeyRound size={14} className="text-purple-500" />
-              <span>API Key</span>
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  hasCustomKey ? "bg-emerald-500" : "bg-gray-400"
-                }`}
-                title={
-                  hasCustomKey
-                    ? "Custom Gemini key active"
-                    : "Using server .env key"
-                }
-              />
-            </button>
           </div>
         </div>
 
@@ -746,7 +689,7 @@ export default function Insights() {
                     )}
                   </div>
                   <p className="text-xs text-gray-400 mt-1">
-                    Powered by Google Gemini (gemini-3.8-flash) — analyzes your{" "}
+                    Built-in FinTrack AI Intelligence — analyzes your{" "}
                     {periodType} income, category distribution, and period-over-period trends.
                   </p>
                 </div>
@@ -1303,66 +1246,6 @@ export default function Insights() {
             </div>
           </>
         )}
-
-        {/* Gemini API Key Configuration Modal */}
-        <Modal
-          isOpen={openKeyModal}
-          onClose={() => setOpenKeyModal(false)}
-          title="Configure Gemini API Key"
-        >
-          <form onSubmit={handleSaveApiKey} className="space-y-4">
-            <p
-              className={`text-xs leading-relaxed ${
-                isDark ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              Enter your Google Gemini API key from{" "}
-              <a
-                href="https://aistudio.google.com/apikey"
-                target="_blank"
-                rel="noreferrer"
-                className="text-purple-500 underline"
-              >
-                Google AI Studio
-              </a>
-              . Your key is stored locally in your browser and sent securely to
-              your backend when generating summaries. If you already added{" "}
-              <code>GEMINI_API_KEY</code> in <code>backend/.env</code>, you can
-              leave this blank.
-            </p>
-            <div>
-              <label
-                className={`block text-xs font-medium mb-1 ${
-                  isDark ? "text-gray-200" : "text-gray-700"
-                }`}
-              >
-                Gemini API Key
-              </label>
-              <input
-                type="password"
-                value={apiKeyInput}
-                onChange={(e) => setApiKeyInput(e.target.value)}
-                placeholder="AIzaSy..."
-                className={isDark ? "input-box-dark" : "input-box"}
-              />
-            </div>
-            <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setOpenKeyModal(false)}
-                className="px-4 py-2 rounded-lg text-xs border border-gray-400 text-gray-500 cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 rounded-lg text-xs bg-purple-600 text-white font-medium cursor-pointer hover:bg-purple-700"
-              >
-                Save API Key
-              </button>
-            </div>
-          </form>
-        </Modal>
       </div>
     </DashboardLayout>
   );

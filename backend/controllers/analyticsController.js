@@ -536,22 +536,22 @@ exports.getPeriodAnalytics = async (req, res) => {
     const expenseChangePercent =
       prevStats.totalExpense > 0
         ? Number(
-            (
-              ((totalExpense - prevStats.totalExpense) /
-                prevStats.totalExpense) *
-              100
-            ).toFixed(1)
-          )
+          (
+            ((totalExpense - prevStats.totalExpense) /
+              prevStats.totalExpense) *
+            100
+          ).toFixed(1)
+        )
         : null;
 
     const incomeChangePercent =
       prevStats.totalIncome > 0
         ? Number(
-            (
-              ((totalIncome - prevStats.totalIncome) / prevStats.totalIncome) *
-              100
-            ).toFixed(1)
-          )
+          (
+            ((totalIncome - prevStats.totalIncome) / prevStats.totalIncome) *
+            100
+          ).toFixed(1)
+        )
         : null;
 
     const timeSeriesData = buildTimeSeries(periodInfo, incomes, expenses);
@@ -674,22 +674,53 @@ exports.getMonthlyHistory = async (req, res) => {
   }
 };
 
+const AI_MODELS_PRIORITY = [
+  "gemini-3.8-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
+];
+
+async function createAiInteractionWithFallback(ai, params) {
+  let lastError;
+  for (const model of AI_MODELS_PRIORITY) {
+    try {
+      return await ai.interactions.create({
+        ...params,
+        model,
+      });
+    } catch (err) {
+      lastError = err;
+      const msg = String(err?.message || "").toLowerCase();
+      if (
+        err?.status === 503 ||
+        err?.status === 429 ||
+        msg.includes("high demand") ||
+        msg.includes("service_unavailable") ||
+        msg.includes("unusable") ||
+        msg.includes("unexpected http client error")
+      ) {
+        console.warn(
+          `Model ${model} unavailable (${err.message}), trying fallback...`
+        );
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastError;
+}
+
 exports.generateAiSummary = async (req, res) => {
   try {
     const userId = req.user.id;
     const { periodType = "month", periodKey = "" } = req.body;
 
-    const apiKey =
-      req.headers["x-gemini-api-key"] ||
-      req.body.apiKey ||
-      process.env.GEMINI_API_KEY ||
-      process.env.GOOGLE_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
     if (!apiKey) {
-      return res.status(400).json({
+      return res.status(503).json({
         message:
-          "Gemini API key is not configured. Please add GEMINI_API_KEY to backend/.env or set your key in the AI Insights settings modal.",
-        missingApiKey: true,
+          "AI Financial Intelligence is currently unavailable. Please verify the backend environment configuration.",
       });
     }
 
@@ -757,8 +788,7 @@ exports.generateAiSummary = async (req, res) => {
     const { GoogleGenAI } = await import("@google/genai");
     const ai = new GoogleGenAI({ apiKey });
 
-    const interaction = await ai.interactions.create({
-      model: "gemini-3.8-flash",
+    const interaction = await createAiInteractionWithFallback(ai, {
       system_instruction:
         "You are FinTrack AI, an expert personal finance analyst. Analyze the user's financial data for the specified period (week, month, or year) and return a deeply insightful, practical, and encouraging financial summary in Indian Rupees (₹). If there are zero transactions in the period, note that no transactions were recorded yet and provide helpful guidance on getting started.",
       input: `Analyze this financial dataset for ${periodInfo.label} (${periodInfo.periodType} view) and generate a structured summary:\n\n${JSON.stringify(
@@ -880,17 +910,12 @@ exports.askAiAssistant = async (req, res) => {
       return res.status(400).json({ message: "Question is required." });
     }
 
-    const apiKey =
-      req.headers["x-gemini-api-key"] ||
-      req.body.apiKey ||
-      process.env.GEMINI_API_KEY ||
-      process.env.GOOGLE_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
     if (!apiKey) {
-      return res.status(400).json({
+      return res.status(503).json({
         message:
-          "Gemini API key is not configured. Please add GEMINI_API_KEY to backend/.env or set your key in the AI Insights settings modal.",
-        missingApiKey: true,
+          "AI Financial Intelligence is currently unavailable. Please verify the backend environment configuration.",
       });
     }
 
@@ -935,19 +960,17 @@ exports.askAiAssistant = async (req, res) => {
     let interaction;
     try {
       const requestParams = {
-        model: "gemini-3.8-flash",
         system_instruction: systemInstruction,
         input: inputPrompt,
       };
       if (previousInteractionId) {
         requestParams.previous_interaction_id = previousInteractionId;
       }
-      interaction = await ai.interactions.create(requestParams);
+      interaction = await createAiInteractionWithFallback(ai, requestParams);
     } catch (firstErr) {
       // Fallback without previous_interaction_id if the prior interaction expired
       if (previousInteractionId) {
-        interaction = await ai.interactions.create({
-          model: "gemini-3.8-flash",
+        interaction = await createAiInteractionWithFallback(ai, {
           system_instruction: systemInstruction,
           input: inputPrompt,
         });
