@@ -51,3 +51,5 @@ export const ExpenseTransactions = ({transactions, onseeMore}) => {
     </div>
       )
 }
+
+export default ExpenseTransactions;

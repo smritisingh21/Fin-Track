@@ -9,7 +9,7 @@ import {
   LuWalletMinimal,
 } from "react-icons/lu";
 import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
-import { InfoCard } from "../../components/cards/InfoCard.jsx";
+import InfoCard from "../../components/cards/InfoCard.jsx";
 import { addThousandsSeparator, getCurrentMonthString } from "../../utils/helper.js";
 import PeriodFilter from "../../components/PeriodFilter.jsx";
 import FinanceOverview from "../../components/dashboard/FinanceOverview.jsx";
