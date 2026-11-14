@@ -7,11 +7,23 @@ exports.getDashboardData = async (req, res) => {
   try {
     const userId = req.user.id;
     const userObjId = new Types.ObjectId(String(userId));
-    const { periodType = "all", periodKey, date, week, month, year } = req.query;
+    const {
+      periodType,
+      filterMode,
+      periodKey,
+      date,
+      week,
+      month,
+      year,
+    } = req.query;
 
-    if (["date", "week", "month", "year"].includes(periodType)) {
+    const rawType = periodType || filterMode || "month";
+    const normalizedType =
+      rawType === "day" ? "date" : ["date", "week", "month", "year", "all"].includes(rawType) ? rawType : "month";
+
+    if (normalizedType !== "all") {
       const rawKey = periodKey || date || week || month || year || "";
-      const periodInfo = resolvePeriodRange(periodType, rawKey);
+      const periodInfo = resolvePeriodRange(normalizedType, rawKey);
 
       const [incomes, expenses] = await Promise.all([
         Income.find({
@@ -47,7 +59,7 @@ exports.getDashboardData = async (req, res) => {
 
       return res.status(200).json({
         filterInfo: {
-          periodType: periodInfo.periodType,
+          periodType: normalizedType,
           periodKey: periodInfo.periodKey,
           label: periodInfo.label,
           startDate: periodInfo.startDate,

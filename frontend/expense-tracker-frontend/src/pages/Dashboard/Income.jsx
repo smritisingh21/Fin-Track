@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState, useContext } from 'react'
 import DashboardLayout from '../../components/layouts/DashboardLayout'
 import { IncomeOverview } from '../../components/income/IncomeOverview';
 import API_PATHS from '../../utils/apiPaths.js'
@@ -6,170 +6,197 @@ import Modal from '../../components/layouts/Modal.jsx';
 import { toast } from 'react-hot-toast';
 import AddIncomeForms from '../../components/income/AddIncomeForms.jsx';
 import axiosInstance from '../../utils/axiosInstance.js';
-import IncomeList  from '../../components/income/IncomeList.jsx';
+import IncomeList from '../../components/income/IncomeList.jsx';
 import DeleteAlert from '../../components/DeleteAlert.jsx';
+import PeriodFilter from '../../components/PeriodFilter.jsx';
 import useUserAuth from '../../hooks/useUserAuth.jsx';
-import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext.jsx';
 import { RiLoader2Fill } from 'react-icons/ri';
+import {
+  filterTransactionsByPeriod,
+  getCurrentMonthString,
+  addThousandsSeparator,
+} from '../../utils/helper.js';
 
 export default function Income() {
   useUserAuth();
 
-  const{isDark} = useContext(ThemeContext)
+  const { isDark } = useContext(ThemeContext);
 
-  const [incomeData , setIncomeData] = useState([]);
-  const [loading , setLoading] = useState(false);
-  const [openDeleteAlert , setOpenDeleteAlert] = useState({show :false, data: null});
-  const [openAddincomeModal , setOpenAddIncomeModal] = useState(false);
+  const [incomeData, setIncomeData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState({ show: false, data: null });
+  const [openAddincomeModal, setOpenAddIncomeModal] = useState(false);
 
+  // Period filter state: defaults to "month"
+  const [periodType, setPeriodType] = useState("month");
+  const [periodValue, setPeriodValue] = useState(getCurrentMonthString);
 
-  //get income details
-  const fetchIncomeDetails = async() =>{
-    if(loading) return;
+  // Get income details
+  const fetchIncomeDetails = async () => {
+    if (loading) return;
     setLoading(true);
 
-    try{
-      const response = await axiosInstance.get(`${API_PATHS.INCOME.GET_ALL_INCOME}`)
-      if(response.data){
+    try {
+      const response = await axiosInstance.get(`${API_PATHS.INCOME.GET_ALL_INCOME}`);
+      if (response.data) {
         setIncomeData(response.data);
       }
-    }catch(err){
-      console.log("Could not fetch income data.Please try again. \n" , err);
-    }finally{
+    } catch (err) {
+      console.log("Could not fetch income data. Please try again. \n", err);
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
-  //add income
-  const handleAddIncomes =async(income) =>{
-    const {source , amount , date , icon} = income;
+  // Filter incomes by Day, Week, Month (default), Year, or All Time
+  const filteredIncomes = useMemo(() => {
+    return filterTransactionsByPeriod(incomeData, periodType, periodValue);
+  }, [incomeData, periodType, periodValue]);
+
+  const filteredTotal = useMemo(() => {
+    return filteredIncomes.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  }, [filteredIncomes]);
+
+  // Add income
+  const handleAddIncomes = async (income) => {
+    const { source, amount, date, icon } = income;
     
-    //validation checks
-    if(!source.trim()){
+    if (!source.trim()) {
       toast.error("Source is required.");
       return;
     }
-    if(!amount || isNaN(amount) || Number(amount)<=0){
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
       toast.error("Amount should be a valid number greater than 0.");
       return;
     }
-    if(!date){
+    if (!date) {
       toast.error("Date is required.");
       return;
     }
-    try{
-      await axiosInstance.post(API_PATHS.INCOME.ADD_INCOME ,{
-        amount :Number(amount) ,
-        source ,
+    try {
+      await axiosInstance.post(API_PATHS.INCOME.ADD_INCOME, {
+        amount: Number(amount),
+        source,
         date,
         icon,
-      })
+      });
       fetchIncomeDetails();
       setOpenAddIncomeModal(false);
-      toast.success("Income added successfully.")
-    }catch(err){
-    console.error( "Error adding income: ", errorMessage);
+      toast.success("Income added successfully.");
+    } catch (err) {
+      console.error("Error adding income: ", err);
+      toast.error(err.response?.data?.message || "Failed to add income");
     }
-  }
+  };
 
-  //delete income
-  const handleDeleteIncome =async(id) =>{
-    try{
-      await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id))
+  // Delete income
+  const handleDeleteIncome = async (id) => {
+    try {
+      await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
 
-      setOpenDeleteAlert({show:false , data:null});
-      toast.success("Income details deleted succesfully");
+      setOpenDeleteAlert({ show: false, data: null });
+      toast.success("Income details deleted successfully");
       fetchIncomeDetails();
-    }catch(error){
+    } catch (error) {
       console.error(
-      "Error deleting income: ",
-      error.response?.data?.message || error.message
-      )
+        "Error deleting income: ",
+        error.response?.data?.message || error.message
+      );
     }
-  }
+  };
 
-  //download
-  const handleDownloadIncomeDetails =async() =>{
-    try{
-      const response = await axiosInstance.get(API_PATHS.INCOME.DOWNLOAD_INVOICE,
-        {
-        responseType:"blob",
-        }
-    );
-      const url = window.URL.createObjectURL(new Blob([response.data]))
+  // Download income details as Excel
+  const handleDownloadIncomeDetails = async () => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.INCOME.DOWNLOAD_INVOICE, {
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download" , "invoice.xlsx");
+      link.setAttribute("download", "invoice.xlsx");
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
       window.URL.revokeObjectURL(url);
-      }catch(error){
-        console.error("Error downloading invoice :" , error);
-        toast.error("Failed to download.Please try again.")
-      }
-  }
+    } catch (error) {
+      console.error("Error downloading invoice :", error);
+      toast.error("Failed to download. Please try again.");
+    }
+  };
 
-  useEffect(() =>{
+  useEffect(() => {
     fetchIncomeDetails();
-    return(() => {})
-  },[])
-  
+  }, []);
 
-  
   return (
-    
-    ( 
-     <DashboardLayout activeMenu="Income">
-       <div className=' my-10 mx-auto'>
+    <DashboardLayout activeMenu="Income">
+      <div className='my-5 mx-auto space-y-6'>
+        {/* Period Filter right above the Income Overview */}
+        <PeriodFilter
+          periodType={periodType}
+          setPeriodType={setPeriodType}
+          periodValue={periodValue}
+          setPeriodValue={setPeriodValue}
+          showAllTime={true}
+          summaryBadge={
+            <div className="text-xs flex items-center gap-1.5">
+              <span className="text-gray-400">
+                Filtered Total ({filteredIncomes.length}):
+              </span>
+              <span className={`font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
+                ₹{addThousandsSeparator(filteredTotal)}
+              </span>
+            </div>
+          }
+        />
 
-        {
-        (loading) ? (
+        {loading ? (
           <div className='flex justify-center items-center gap-3 py-30'>
-           <div className={`' animate-spin ' ${isDark? 'text-white' :'text-black'}`}><RiLoader2Fill size={40} /></div>
-            <div className={`' text-center py-20' ${isDark? 'text-white' :'text-black'}`}>Loading your income data...</div>            
+            <div className={`animate-spin ${isDark ? 'text-white' : 'text-black'}`}>
+              <RiLoader2Fill size={40} />
+            </div>
+            <div className={`text-center py-20 ${isDark ? 'text-white' : 'text-black'}`}>
+              Loading your income data...
+            </div>            
           </div>        
-        )
-         : 
-        (
-        <div className='grid grid-cols-1 gap-6 h-full'>
-          <div>
-            <IncomeOverview 
-            transactions ={incomeData}
-            onAddIncome={() => setOpenAddIncomeModal(true)}
+        ) : (
+          <div className='grid grid-cols-1 gap-6 h-full'>
+            <div>
+              <IncomeOverview 
+                transactions={filteredIncomes}
+                onAddIncome={() => setOpenAddIncomeModal(true)}
+              />
+            </div>
+           
+            <IncomeList
+              transactions={filteredIncomes}
+              onDelete={(id) => { setOpenDeleteAlert({ show: true, data: id }); }}
+              onDownload={handleDownloadIncomeDetails}
             />
           </div>
-         
-           <IncomeList transactions={incomeData}
-            onDelete={(id) =>{setOpenDeleteAlert({show : true , data : id}) }}
-            onDownload={handleDownloadIncomeDetails}
-            />
-            
-         </div>
-
         )}
-        <Modal title ='Add income' 
-        isOpen={openAddincomeModal} 
-        onClose={() => setOpenAddIncomeModal(false)}>
 
-        <AddIncomeForms onAddIncome={handleAddIncomes}></AddIncomeForms>
+        <Modal
+          title='Add income' 
+          isOpen={openAddincomeModal} 
+          onClose={() => setOpenAddIncomeModal(false)}
+        >
+          <AddIncomeForms onAddIncome={handleAddIncomes} />
         </Modal>
 
         <Modal
           isOpen={openDeleteAlert.show}
-          onClose={() => setOpenDeleteAlert({show :false ,  data: null})}
+          onClose={() => setOpenDeleteAlert({ show: false, data: null })}
           title="Delete Income"
-          >
+        >
           <DeleteAlert
-          content = "Are you sure you want to delete this income?"
-          onDelete={() => handleDeleteIncome(openDeleteAlert.data)}
+            content="Are you sure you want to delete this income?"
+            onDelete={() => handleDeleteIncome(openDeleteAlert.data)}
           />
-            
         </Modal>
-        
-        </div>
-     </DashboardLayout>
-    )
-  )
+      </div>
+    </DashboardLayout>
+  );
 }
