@@ -1,145 +1,314 @@
-💰 FinTrack: Personal Income & Expense Tracker
+# 💰 FinTrack — Personal Financial Tracker & AI Intelligence Platform
 
-**Project Overview**
+[![Node.js](https://img.shields.io/badge/Node.js-v20+-68a063?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-v19-61dafb?logo=react&logoColor=black)](https://react.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ed?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Google Gemini](https://img.shields.io/badge/Google%20Gemini-Integrated-8e75ff?logo=google&logoColor=white)](https://ai.google.dev/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas%20%7C%20Local-47a248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-FinTrack is a full-stack, single-page application designed to help users manage, visualize, and track their personal income and expenses. Built with the MERN stack, it offers secure user authentication, real-time data visualization, and tools for financial analysis.
+**FinTrack** is a modern, full-stack personal finance application that helps individuals track income, monitor expenses, visualize spending trends, and receive automated financial reports and conversational advice powered by **Google Gemini AI**.
 
-The application adheres to modern best practices, utilizing stateless JWT authentication and a component-driven architecture in React.
+---
 
-🌟 Features
+## 📑 Table of Contents
 
-- **User Authentication (JWT):** Secure registration and login flow with JSON Web Tokens (JWT) stored in Local Storage.
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Technology Stack](#-technology-stack)
+- [Project Directory Structure](#-project-directory-structure)
+- [Environment Configuration](#-environment-configuration)
+- [Getting Started](#-getting-started)
+  - [Option A: Running with Docker (Recommended)](#option-a-running-with-docker-recommended)
+  - [Option B: Running Locally (Manual Setup)](#option-b-running-locally-manual-setup)
+- [API Endpoints Reference](#-api-endpoints-reference)
+- [Security & Architecture Highlights](#-security--architecture-highlights)
+- [Documentation & Deep Dives](#-documentation--deep-dives)
 
-- **Income Management:** Add, view, and list income transactions with source, amount, and date.
+---
 
-- **Expense Management:** Add, view, and list expense transactions with category, amount, and date.
+## ✨ Key Features
 
-- **Dynamic Dashboard:** Real-time financial overview displaying total balance, total income, and total expenses.
+### 1. 🤖 Built-In Gemini AI Financial Intelligence
+- **Zero-Config Turnkey AI**: The application uses a backend-managed secret (`GEMINI_API_KEY`). Users never need to supply or configure their own API keys.
+- **Structured Financial Summaries**: Generates executive summaries, overall spending health evaluations (`healthy`, `moderate`, `overspending`), data-backed spending insights, category breakdown observations, saving tips, and next-period budget forecasts.
+- **Interactive "Ask Gemini" Financial Assistant**: Stateful multi-turn conversational Q&A (`previous_interaction_id`) with prompt chips allowing users to ask specific questions about their transactions.
+- **High-Availability Model Fallback**: Tries `gemini-3.8-flash` first, with automatic fallback to `gemini-3.5-flash-lite` and `gemini-3.1-flash-lite` during peak Google API demand or transient errors.
 
-- **Data Visualization (Recharts):** Interactive charts showing income trends (e.g., last 60 days) and expense breakdowns (e.g., last 30 days).
+### 2. 📅 Multi-Granularity Period Filtering
+- Filter analytics across **Day / Date**, **ISO Week**, **Month** (default), **Year**, and **All Time**.
+- Consistent [`PeriodFilter`](file:///Users/sillymillie/Desktop/Code/projects/expense-tracker/frontend/expense-tracker-frontend/src/components/PeriodFilter.jsx) control bar with previous/next shifting buttons, native date inputs, and "Reset to Current".
+- Integrated seamlessly on the **Dashboard (`Home.jsx`)**, **Income page (`Income.jsx`)**, **Expense page (`Expense.jsx`)**, and **AI Insights page (`Insights.jsx`)**.
 
-- **Responsive UI:** A modern, mobile-friendly dashboard layout with a fixed sidebar (powered by Tailwind CSS).
+### 3. 📊 Visual Dashboard & Interactive Analytics
+- **KPI Overview Cards**: Real-time Total Balance, Total Income, and Total Expense with dynamic active period badges.
+- **Interactive Recharts**:
+  - Income trends (Bar chart)
+  - Expense analysis (Bar chart)
+  - Category distribution (Donut / Pie chart)
+- **Monthly Vault History**: Pre-aggregated period snapshots stored in MongoDB for instant historical lookups.
 
-- **Data Export:** Download income and expense reports as Excel files (using the xlsx library).
+### 4. 💸 Income & Expense Management
+- Categorized transactions with custom emoji icons.
+- Instant modal creation and secure deletion with confirmation dialogs.
+- **Excel Report Export**: Download formatted Excel spreadsheets (`.xlsx`) generated by the backend with proper blob responses.
 
-**🚀 Technology Stack**
+### 5. 🔐 Dual Authentication (Email/Password & Google OAuth)
+- Standard JWT registration and login with `bcryptjs` password hashing.
+- One-click **Google Sign-In** using `@react-oauth/google` and server-side token verification via `google-auth-library`.
+- Profile avatar upload with Multer.
 
+### 6. 🌙 Dark Mode / Light Mode
+- Persistent theme toggle powered by React Context (`ThemeContext`) and Tailwind CSS dark theme variants.
 
-**Frontend**
+---
 
-1. React, React Router, Tailwind CSS
+## 🏛 System Architecture
 
-2. UI, Routing, and Component Management
+The application follows a clean 3-tier client-server architecture with containerized deployment:
 
-3. Recharts Library
+```mermaid
+flowchart TD
+    User["User Browser / Client"]
 
-4. Rendering dynamic Bar Charts and Pie Charts
+    subgraph DockerBridge ["Docker Virtual Network (fintrack-net)"]
+        Nginx["Frontend Web Server (Nginx 1.27 Alpine)\n- Serves React SPA (dist/)\n- Client-side routing fallback (/index.html)\n- Reverse-proxies /api/ -> backend:8000\n- Port 80 & 5173"]
 
-5. React Context API
+        Backend["Backend REST API (Node.js 20 LTS Alpine / Express)\n- Auth & Google OAuth verification\n- Dashboard & Period Aggregation\n- File uploads & Excel reports\n- Port 8000"]
 
-6. Global user authentication state (UserContext)
+        LocalMongo[("Local MongoDB (mongo:7.0)\n- Persistent Volume: mongo-data\n- Port 27017")]
+    end
 
-**Backend**
+    Atlas[("MongoDB Atlas (Cloud DB)\n(Optional alternative to local container)")]
+    GeminiAPI["Google Gemini API\n(Interactions API v1beta / v1)\n- gemini-3.8-flash\n- gemini-3.5-flash-lite"]
 
-1. Node.js, Express.js
+    User -->|HTTP :80 / :5173| Nginx
+    Nginx -->|Proxy /api/*| Backend
+    Backend -->|Mongoose DB Driver| LocalMongo
+    Backend -.->|External SRV Connection| Atlas
+    Backend -->|@google/genai SDK (HTTPS)| GeminiAPI
+```
 
-2. API server and routing
+### Data Flow
+1. **Client Requests**: The browser connects to the Nginx frontend container (or Vite dev server locally). All API requests (`/api/v1/...`) are routed to the Express backend.
+2. **Authentication**: Requests carry a stateless JWT in the `Authorization: Bearer <token>` header. The `protect` middleware verifies the token and populates `req.user.id`.
+3. **Transaction Processing**: Additions/deletions of income or expenses trigger automatic background sync hooks (`syncMonthlySummaryForDate`) to update monthly snapshots.
+4. **AI Generation**: When requested, the backend aggregates income/expense metrics for the chosen period and feeds the payload to Google Gemini via `@google/genai` under a strict JSON schema. The resulting structured analysis is persisted in MongoDB and returned to the UI.
 
-3. MongoDB, Mongoose
+---
 
+## 🛠 Technology Stack
 
+### Frontend
+- **Framework & Tooling**: React 19, Vite 7, React Router 7
+- **Styling**: Tailwind CSS v4, Lucide React (`react-icons/lu`), Heroicons
+- **Charting**: Recharts
+- **HTTP Client**: Axios (configured with 45s timeout for AI generation)
+- **Auth & Notifications**: `@react-oauth/google`, `jwt-decode`, `react-hot-toast`
+- **Utility**: `moment`, `emoji-picker-react`
 
-**Authentication**
+### Backend
+- **Runtime & Server**: Node.js 20 LTS, Express 5
+- **Database & ODM**: MongoDB, Mongoose 8
+- **AI & Machine Learning**: `@google/genai` SDK (Google Gemini Interactions API)
+- **Authentication**: `jsonwebtoken`, `bcryptjs`, `google-auth-library`
+- **File & Data Handling**: `multer` (uploads), `xlsx` (Excel export), `dotenv`
 
-1. JWT (JSON Web Tokens)
+### DevOps & Deployment
+- **Containerization**: Docker, Docker Compose
+- **Web Server / Reverse Proxy**: Nginx 1.27 Alpine (multi-stage build, gzip, asset caching)
 
-2. Stateless authentication and authorization
+---
 
-**File Handling**
+## 📁 Project Directory Structure
 
-1. Multer, xlsx
+```text
+expense-tracker/
+├── backend/
+│   ├── config/              # Database connection (db.js)
+│   ├── controllers/         # Request handlers (analytics, auth, dashboard, expense, income)
+│   ├── middlewares/         # JWT auth middleware (authMiddleware.js, uploadMiddleware.js)
+│   ├── models/              # Mongoose schemas (User, Expense, Income, PeriodSummary)
+│   ├── routes/              # Express route declarations
+│   ├── uploads/             # Static file uploads (avatars, attachments)
+│   ├── .dockerignore        # Docker build exclusions for backend
+│   ├── Dockerfile           # Node.js 20 Alpine production image
+│   ├── package.json
+│   └── server.js            # Express application bootstrap & route mounting
+│
+├── frontend/expense-tracker-frontend/
+│   ├── public/              # Static assets
+│   ├── src/
+│   │   ├── components/      # UI components (PeriodFilter, cards, charts, layouts)
+│   │   ├── context/         # React Contexts (UserContext, ThemeContext)
+│   │   ├── hooks/           # Custom hooks (useUserAuth)
+│   │   ├── pages/           # Application views (Dashboard/Home, Income, Expense, Insights, Auth)
+│   │   ├── utils/           # Helper functions, API route constants, Axios instance
+│   │   ├── App.jsx          # Top-level client routing
+│   │   └── main.jsx         # Vite entry point
+│   ├── .dockerignore        # Docker build exclusions for frontend
+│   ├── Dockerfile           # Multi-stage build (Node build -> Nginx runtime)
+│   ├── nginx.conf           # SPA routing & API reverse proxy configuration
+│   ├── package.json
+│   └── vite.config.js
+│
+├── .env.docker.example      # Template for Docker environment variables
+├── docker-compose.yml       # Multi-container orchestration (Mongo, Backend, Frontend)
+├── DOCKER.md                # Comprehensive Docker operations manual
+├── AI_INSIGHTS_README.md    # Detailed Gemini AI integration reference
+└── README.md                # Main project documentation
+```
 
-2. Handling image uploads and Excel data export
+---
 
-**⚙️ Setup and Installation**
---------------------------------
-**
-Prerequisites**
+## ⚙️ Environment Configuration
 
-To run this project locally, ensure you have the following installed:
+Create a `.env` file inside `backend/` (or at the root when using Docker Compose):
 
-Node.js (v18+)
-
-MongoDB Instance (Local or Atlas)
-
-Git
-
-**1. Backend Setup**
-
-Clone the repository:
-
-git clone <repo_url>
-
-
-Navigate to the server directory (e.g., cd server):
-
-Install dependencies:
-
-npm install
-
-
-Create a .env file in the root directory and add your connection strings:
-
+```env
+# Server
 PORT=8000
-MONGO_URI="your_mongodb_connection_string"
-JWT_SECRET="YOUR_STRONG_SECRET_KEY"
+NODE_ENV=production
 
+# Database Connection
+# Option A: Local MongoDB (default with Docker)
+# MONGO_URI=mongodb://mongodb:27017/expense-tracker
+# Option B: MongoDB Atlas Cloud
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/expense-tracker?retryWrites=true&w=majority
 
-Start the server:
+# Authentication
+JWT_SECRET=your_super_strong_jwt_secret_key
 
-npm start
-# or
-node server.js
+# Google OAuth (Optional, for Google Sign-In)
+CLIENT_ID=your_google_oauth_client_id.apps.googleusercontent.com
 
+# Google Gemini AI (Required for AI Financial Insights & Chat)
+GEMINI_API_KEY=your_gemini_api_key_here
+```
 
-The API server will run on http://localhost:8000.
+> [!IMPORTANT]
+> `backend/.env` is ignored by Git to keep your credentials safe. Never commit `.env` files to public repositories.
 
-**2. Frontend Setup**
+---
 
-Navigate to the client directory (e.g., cd client):
+## 🚀 Getting Started
 
-Install dependencies:
+### Option A: Running with Docker (Recommended)
 
+Docker packages the frontend, backend, and local MongoDB into isolated containers.
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/smritisingh21/Fin-Track.git
+   cd FinTrack
+   ```
+
+2. **Configure environment variables**:
+   ```bash
+   cp .env.docker.example .env
+   # Add your GEMINI_API_KEY and custom secrets in .env
+   ```
+
+3. **Build and start all services**:
+   ```bash
+   docker compose up --build -d
+   ```
+
+4. **Access the application**:
+   - Web Application: [http://localhost](http://localhost) or [http://localhost:5173](http://localhost:5173)
+   - Backend API: [http://localhost:8000](http://localhost:8000)
+   - Local MongoDB: `mongodb://localhost:27017/expense-tracker`
+
+*(For detailed explanations of `docker-compose.yml` and container commands, see [`DOCKER.md`](file:///Users/sillymillie/Desktop/Code/projects/expense-tracker/DOCKER.md)).*
+
+---
+
+### Option B: Running Locally (Manual Setup)
+
+#### 1. Backend Setup
+```bash
+cd backend
+
+# Install dependencies (including @google/genai)
 npm install
 
+# Create .env and configure MONGO_URI, JWT_SECRET, and GEMINI_API_KEY
+cp ../.env.docker.example .env
 
-Start the development server:
-
+# Start the server
 npm run dev
-# or
-npm start
+# or: node server.js
+```
+The backend starts on `http://localhost:8000`.
 
+#### 2. Frontend Setup
+```bash
+cd frontend/expense-tracker-frontend
 
-The frontend will run on http://localhost:5173 (or similar).
+# Install dependencies
+npm install
 
-**⚠️ Key Architectural Notes**
+# Start Vite development server
+npm run dev
+```
+The frontend launches on `http://localhost:5173`.
 
-1. CORS Configuration
+---
 
-The Express server is configured to handle Cross-Origin Resource Sharing (CORS) correctly, explicitly allowing the client application's development port (http://localhost:5173) to make secure requests to the API.
+## 📡 API Endpoints Reference
 
-2. Preventing Infinite Render Loops
+All endpoints (except auth login/register/google) require the `Authorization: Bearer <token>` header.
 
-To maintain high performance and avoid the common "Maximum update depth exceeded" error (often encountered when integrating Recharts), several components use the useMemo hook:
+### Authentication (`/api/v1/auth`)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/register` | Create a new user account |
+| `POST` | `/login` | Email/password sign-in |
+| `POST` | `/google` | Google OAuth ID token verification & sign-in |
+| `GET` | `/getUser` | Get profile info of current authenticated user |
+| `POST` | `/upload-image` | Upload user profile picture |
 
-FinanceOverview.jsx
+### Income (`/api/v1/income`)
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/get` | Fetch all income records for current user |
+| `POST` | `/add` | Add an income transaction (`source`, `amount`, `date`, `icon`) |
+| `DELETE` | `/:id` | Delete an income record |
+| `GET` | `/download` | Export income records as an Excel spreadsheet (`.xlsx`) |
 
-RecentIncomeWithChart.jsx
+### Expense (`/api/v1/expense`)
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/get` | Fetch all expense records for current user |
+| `POST` | `/add` | Add an expense transaction (`category`, `amount`, `date`, `icon`) |
+| `DELETE` | `/:id` | Delete an expense record |
+| `GET` | `/download` | Export expense records as an Excel spreadsheet (`.xlsx`) |
 
-Last30daysExpenses.jsx
+### Dashboard (`/api/v1/dashboard`)
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/` | Retrieve dashboard totals, period breakdown, and recent transactions. Accepts query parameters: `periodType` (`day`, `week`, `month`, `year`, `all`) and `periodKey`. |
 
-This ensures chart data is only recalculated and updated when the raw transaction data changes, stabilizing the entire dashboard rendering cycle.
+### Analytics & AI (`/api/v1/analytics`)
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/period` | Get metrics, category/income breakdowns, and cached AI summary for a specific period. |
+| `GET` | `/monthly-history` | Get list of historical monthly snapshot summaries. |
+| `POST` | `/ai-summary` | Generate/regenerate a structured Gemini AI summary for a given period. |
+| `POST` | `/ai-chat` | Multi-turn conversational Q&A about the user's financial dataset. |
 
-3. Protected Routes
+---
 
-All sensitive API routes (/api/v1/income, /api/v1/expense, etc.) are protected using an Express middleware (protect) that verifies the validity and signature of the incoming JWT.
+## 🔒 Security & Architecture Highlights
+
+1. **Backend Secret Protection**: `GEMINI_API_KEY` is strictly server-side. The frontend neither requires nor accepts client-submitted keys.
+2. **CORS Governance**: Configured in `backend/server.js` with dynamic whitelisting supporting local development (`localhost:5173`) and production domains (`*.vercel.app`).
+3. **Optimized Layer Caching**: Both backend and frontend Dockerfiles separate `package*.json` installation from application code, minimizing container rebuild durations.
+4. **Performance & Render Stability**: Chart-heavy pages utilize React `useMemo` hooks for data transformation, preventing unnecessary re-renders.
+
+---
+
+## 📚 Documentation & Deep Dives
+
+- 🐳 **[DOCKER.md](file:///Users/sillymillie/Desktop/Code/projects/expense-tracker/DOCKER.md)**: Line-by-line explanation of `docker-compose.yml`, multi-stage Dockerfiles, Nginx reverse proxying, and CLI commands.
+- ✨ **[AI_INSIGHTS_README.md](file:///Users/sillymillie/Desktop/Code/projects/expense-tracker/AI_INSIGHTS_README.md)**: Complete guide to the Google Gemini AI integration, prompt design, schemas, and fallback architecture.
